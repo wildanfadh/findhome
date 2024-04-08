@@ -4,9 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
+    <title>SPK Find Housing</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/libs/simplebar/dist/simplebar.css') }}"> --}}
+
+    @isset($HeadSource)
+        @foreach ($HeadSource as $item)
+            <link rel="stylesheet" href="{{ $item }}">
+        @endforeach
+    @endisset
+
+    @stack('styles')
 </head>
 
 <body>
@@ -22,20 +31,32 @@
             @include('layouts.components.app.navbar')
             <!--  Header End -->
             <div class="container-fluid">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title fw-semibold mb-4">Sample Page</h5>
-                        <p class="mb-0">This is a sample page </p>
-                    </div>
-                </div>
+                @yield('content')
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    {{-- <script src="../assets/libs/simplebar/dist/simplebar.js"></script> --}}
+    {{-- <script src="{{ asset('assets/libs/simplebar/src/simplebar.js') }}"></script> --}}
+    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('assets/js/app.min.js') }}"></script>
+
+    @isset($JsSource)
+        @foreach ($JsSource as $item)
+            <script src="{{ $item }}"></script>
+        @endforeach
+    @endisset
+
+    <script>
+        function objectToArray(data) {
+            return Object.keys(data).map((key) => [key, data[key]]);
+        }
+    </script>
+
+    {{-- js pages --}}
+    @stack('scripts')
+
 </body>
 
 </html>

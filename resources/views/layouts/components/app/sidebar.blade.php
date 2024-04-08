@@ -3,7 +3,8 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="{{ url('/') }}" class="text-nowrap logo-img">
-                <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+                {{-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" /> --}}
+                <img src="{{ asset('assets/images/logos/new_logo.png') }}" width="180" alt="lgo">
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -21,7 +22,7 @@
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Dashboard</span>
+                        <span class="hide-menu">Beranda</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -29,7 +30,15 @@
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Dashboard</span>
+                        <span class="hide-menu">List Perumahan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-layout-dashboard"></i>
+                        </span>
+                        <span class="hide-menu">Hasil Rekomendasi</span>
                     </a>
                 </li>
                 {{-- <li class="nav-small-cap">
