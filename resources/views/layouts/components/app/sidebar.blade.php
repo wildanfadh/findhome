@@ -28,7 +28,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="./index.html" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="ti ti-home"></i>
                         </span>
                         <span class="hide-menu">List Perumahan</span>
                     </a>
@@ -36,7 +36,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="./index.html" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="ti ti-crown"></i>
                         </span>
                         <span class="hide-menu">Hasil Rekomendasi</span>
                     </a>
