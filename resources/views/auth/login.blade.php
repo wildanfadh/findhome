@@ -28,8 +28,11 @@
 
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="text" name="username" class="form-control" id="username"
-                                            aria-describedby="emailHelp">
+                                        <div class="input-group">
+                                            <input type="text" name="username" class="form-control" id="username"
+                                                aria-describedby="emailHelp">
+                                            <span class="input-group-text"><i class="ti ti-user fs-6"></i></span>
+                                        </div>
                                     </div>
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
