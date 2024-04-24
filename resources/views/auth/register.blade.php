@@ -24,7 +24,8 @@
                                         alt="">
                                 </a>
                                 {{-- <p class="text-center">Your Social Campaigns</p> --}}
-                                <form>
+                                <form id="form_registrasi">
+                                    @csrf
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama Lengkap</label>
                                         <input type="nama" name="nama" class="form-control" id="nama"
@@ -60,7 +61,8 @@
                                                     class="ti ti-lock fs-6"></i></span>
                                         </div>
                                     </div>
-                                    <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Daftar</a>
+                                    <button type="button"
+                                        class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2 daftar">Daftar</button>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-bold">sudah punya Akun?</p>
                                         <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">Masuk</a>
@@ -82,8 +84,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            {{-- ------------------------------ variables ----------------------------- --}}
+            var form_registrasi = $('#form_registrasi');
+            {{-- ------------------------------ variables ----------------------------- --}}
+
             {{-- --------------------------- form validation -------------------------- --}}
-            $("form").validate();
+            form_registrasi.validate();
             {{-- --------------------------- form validation -------------------------- --}}
 
             {{-- -------------------------- password control -------------------------- --}}
@@ -117,6 +124,67 @@
                 }
             });
             {{-- -------------------------- password control -------------------------- --}}
+
+            {{-- ---------------------------- registration ---------------------------- --}}
+            $('.daftar').on('click', function(e) {
+                // e.preventDevault();
+                var nama = $("input[name='nama']").val();
+                var username = $("input[name='username']").val();
+                var no_hp = $("input[name='no_hp']").val();
+                var email = $("input[name='email']").val();
+                var password = $("input[name='password']").val();
+                var password_conf = $("input[name='password_conf']").val();
+                var data = {
+                    _token: `{{ csrf_token() }}`,
+                    name: nama,
+                    username: username,
+                    no_hp: no_hp,
+                    email: email,
+                    password: password,
+                    password_confirmation: password_conf,
+                };
+                console.log(data);
+
+
+                // console.log('form registrasi');
+                // required for ajax request
+                var msBeforeAjaxCall = new Date().getTime();
+
+                var url = `{{ route('register') }}`;
+
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: data,
+                    dataType: 'json',
+                    timeout: 5000,
+                    beforeSend: function() {
+                        // show spinner or loader
+
+                    },
+                }).done(function(data, textStatus, jqXHR) {
+                    // Process data, as received in data parameter
+
+                    // Send warning log message if response took longer than 2 seconds
+                    var msAfterAjaxCall = new Date().getTime();
+                    var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
+                    if (timeTakenInMs > 2000) {
+                        alert('AJAX response takes a long time');
+                    } else {
+                        // show success message
+                        alert('berhasil');
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    // Request failed. Show error message to user.
+                    // errorThrown has error message, or 'timeout' in case of timeout.
+                    alert('Request failed')
+                }).always(function(jqXHR, textStatus, errorThrown) {
+                    // Hide spinner or loader
+
+                });
+
+            });
+            {{-- ---------------------------- registration ---------------------------- --}}
         });
     </script>
 @endpush
