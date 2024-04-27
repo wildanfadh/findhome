@@ -24,30 +24,31 @@
                                         alt="">
                                 </a>
                                 {{-- <p class="text-center">Your Social Campaigns</p> --}}
-                                <form id="form_registrasi">
+                                <form id="form_registrasi" autocomplete="off">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama Lengkap</label>
-                                        <input type="nama" name="nama" class="form-control" id="nama"
-                                            aria-describedby="namaHelp">
+                                        <input type="text" name="nama" class="form-control" id="nama"
+                                            aria-describedby="namaHelp" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="username" name="username" class="form-control" id="username"
-                                            aria-describedby="usernameHelp">
+                                        <input type="text" name="username" class="form-control" id="username"
+                                            aria-describedby="usernameHelp" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="no_hp" class="form-label">No HP</label>
-                                        <input type="no_hp" name="no_hp" class="form-control" id="no_hp">
+                                        <input type="number" name="no_hp" class="form-control" id="no_hp">
                                     </div>
                                     <div class="mb-4">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email">
+                                        <input type="email" name="email" class="form-control" id="email" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" name="password" class="form-control" id="password">
+                                            <input type="password" name="password" class="form-control" id="password"
+                                                required>
                                             <span class="input-group-text" id="password_icon"><i
                                                     class="ti ti-lock fs-6"></i></span>
                                         </div>
@@ -56,7 +57,7 @@
                                         <label for="password_conf" class="form-label">Konfirmasi Password</label>
                                         <div class="input-group">
                                             <input type="password" name="password_conf" class="form-control"
-                                                id="password_conf">
+                                                id="password_conf" required>
                                             <span class="input-group-text" id="password_conf_icon"><i
                                                     class="ti ti-lock fs-6"></i></span>
                                         </div>
@@ -150,7 +151,7 @@
                 // required for ajax request
                 var msBeforeAjaxCall = new Date().getTime();
 
-                var url = `{{ route('register') }}`;
+                var url = `{{ route('register_umum') }}`;
 
                 $.ajax({
                     type: 'post',
@@ -180,6 +181,9 @@
                     alert('Request failed')
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
+                    if (textStatus == 'success') {
+                        window.location.href = "{{ route('login') }}";
+                    }
 
                 });
 
