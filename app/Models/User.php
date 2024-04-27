@@ -45,4 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function dataPengembang()
+    {
+        return $this->hasOne(Pengembang::class, 'user_id', 'id');
+    }
 }

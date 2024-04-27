@@ -27,4 +27,9 @@ class Pengembang extends Model
         'alamat',
         'is_verified',
     ];
+
+    public function akun()
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }

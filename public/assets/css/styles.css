@@ -16939,6 +16939,7 @@ fieldset:disabled .btn {
 }
 .page-wrapper {
     position: relative;
+    height: 100vh;
 }
 .body-wrapper {
     position: relative;

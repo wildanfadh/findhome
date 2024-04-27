@@ -7,6 +7,7 @@
             cursor: pointer;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @endpush
 
 @section('content')
@@ -24,7 +25,7 @@
                                         alt="">
                                 </a>
                                 {{-- <p class="text-center">Your Social Campaigns</p> --}}
-                                <form id="form_registrasi" autocomplete="off">
+                                <form id="form_registrasi_pengembang" autocomplete="off" enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama Lengkap</label>
@@ -43,6 +44,15 @@
                                     <div class="mb-4">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" name="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="sertifikat_sp2" class="form-label">Sertifikat SP2</label>
+                                        <input type="file" name="sertifikat_sp2" class="form-control" id="sertifikat_sp2"
+                                            required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="alamat" class="form-label">Alamat</label>
+                                        <textarea name="alamat" class="form-control" id="alamat" cols="30" rows="10"></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
@@ -68,12 +78,6 @@
                                         <p class="fs-4 mb-0 fw-bold">sudah punya Akun?</p>
                                         <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">Masuk</a>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        {{-- <p class="fs-4 mb-0 fw-bold">daftar sebagai pengembang?</p> --}}
-                                        <a class="text-primary fw-bold ms-2"
-                                            href="{{ route('page.user.register_pengembang') }}">daftar sebagai
-                                            Pengembang</a>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -89,15 +93,16 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script>
         $(document).ready(function() {
 
             {{-- ------------------------------ variables ----------------------------- --}}
-            var form_registrasi = $('#form_registrasi');
+            var form_registrasi_pengembang = $('#form_registrasi_pengembang');
             {{-- ------------------------------ variables ----------------------------- --}}
 
             {{-- --------------------------- form validation -------------------------- --}}
-            form_registrasi.validate();
+            // form_registrasi_pengembang.validate();
             {{-- --------------------------- form validation -------------------------- --}}
 
             {{-- -------------------------- password control -------------------------- --}}
@@ -139,19 +144,31 @@
                 var username = $("input[name='username']").val();
                 var no_hp = $("input[name='no_hp']").val();
                 var email = $("input[name='email']").val();
+                var sertifikat = $("input[name='sertifikat']")[0].files[0];
+                var alamat = $("textarea[name='alamat']").val();
                 var password = $("input[name='password']").val();
                 var password_conf = $("input[name='password_conf']").val();
-                var data = {
-                    _token: `{{ csrf_token() }}`,
-                    name: nama,
-                    username: username,
-                    no_hp: no_hp,
-                    email: email,
-                    password: password,
-                    password_confirmation: password_conf,
-                };
-                console.log(data);
+                // var data = {
+                //     _token: `{{ csrf_token() }}`,
+                //     name: nama,
+                //     username: username,
+                //     no_hp: no_hp,
+                //     email: email,
+                //     password: password,
+                //     password_confirmation: password_conf,
+                // };
 
+                let formData = new FormData();
+                formData.append('nama', nama);
+                formData.append('username', username);
+                formData.append('no_hp', no_hp);
+                formData.append('email', email);
+                formData.append('sertifikat', sertifikat);
+                formData.append('alamat', alamat);
+                formData.append('password', password);
+                formData.append('password_confirmation', password_conf);
+
+                console.log(data);
 
                 // console.log('form registrasi');
                 // required for ajax request
@@ -160,11 +177,18 @@
                 var url = `{{ route('register_umum') }}`;
 
                 $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'enctype': "multipart/form-data"
+                    },
                     type: 'post',
                     url: url,
                     data: data,
                     dataType: 'json',
                     timeout: 5000,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     beforeSend: function() {
                         // show spinner or loader
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterPengembangRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterUmumRequest;
 
@@ -46,8 +47,47 @@ class UserController extends Controller
         }
     }
 
-    public function register_pengembang(Request $request)
+    public function register_pengembang(RegisterPengembangRequest $request)
     {
+        DB::beginTransaction();
+        try {
+            $data = new User;
+            $role = Role::where('name', 'Pengembang')->first();
+            $data_requests = [
+                "name" => $request->name,
+                "username" => $request->username,
+                "no_hp" => $request->no_hp,
+                "email" => $request->email,
+            ];
+
+            $data_pengembang_request = [
+                "alamat" => $request->alamat,
+                "is_verified" => false,
+            ];
+
+            $data_requests['password'] = Hash::make($request->password);
+            $last = $data->create($data_requests);
+
+            // add data pengembang
+            $last->dataPengembang()->create($data_pengembang_request);
+
+            // add role
+            $last->assignRole([$role->id]);
+
+            DB::commit();
+            return [
+                "success" => true,
+                "message" => "Data berhasil ditambahkan",
+                "data" => $data_requests,
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return [
+                "success" => false,
+                "message" => $e->getMessage(),
+            ];
+        }
     }
 
     public function update(RegisterUmumRequest $request, $id)

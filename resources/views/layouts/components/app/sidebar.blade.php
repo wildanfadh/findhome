@@ -18,7 +18,7 @@
                     <span class="hide-menu">Home</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('beranda') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('page.perumahan.list') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-home"></i>
                         </span>
@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('page.uji.rekomendasi') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-crown"></i>
                         </span>
