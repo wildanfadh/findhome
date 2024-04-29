@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/beranda', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
 
 require __DIR__ . '/web_ajax.php';

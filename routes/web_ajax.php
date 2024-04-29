@@ -7,7 +7,7 @@ Route::post('register_umum', [UserController::class, 'register_umum'])->name('re
 Route::post('register_pengembang', [UserController::class, 'register_pengembang'])->name('register_pengembang');
 
 Route::group([
-    'middleware' => ['auth', 'role:Superadmin'],
+    'middleware' => ['auth'],
     'prefix' => 'ajax.user',
     'as' => 'ajax.user.',
 ], function () {
