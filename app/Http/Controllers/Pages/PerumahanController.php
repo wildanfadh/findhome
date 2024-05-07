@@ -19,6 +19,6 @@ class PerumahanController extends Controller
     {
         $perumahan = Perumahan::find($id);
         $data = ['data' => $perumahan];
-        return view('app.perumahan.daftar', $data);
+        return view('app.perumahan.detail', $data);
     }
 }

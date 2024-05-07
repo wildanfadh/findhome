@@ -20,8 +20,8 @@ Route::group([
     'prefix' => 'page.perumahan',
     'as' => 'page.perumahan.',
 ], function () {
-    Route::get('list', [PerumahanController::class, 'list_pengembang'])->name('list');
-    Route::get('detail/{id}', [PerumahanController::class, 'detail_pengembang'])->name('detail');
+    Route::get('list', [PerumahanController::class, 'list_perumahan'])->name('list');
+    Route::get('detail/{id}', [PerumahanController::class, 'detail_perumahan'])->name('detail');
 });
 
 Route::group([

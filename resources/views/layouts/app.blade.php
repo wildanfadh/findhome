@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
     {{-- <link rel="stylesheet" href="{{ asset('assets/libs/simplebar/dist/simplebar.css') }}"> --}}
 
+    <style>
+        .page-wrapper {
+            height: 100% !important;
+        }
+
+        .body-wrapper {}
+    </style>
+
     @isset($HeadSource)
         @foreach ($HeadSource as $item)
             <link rel="stylesheet" href="{{ $item }}">
