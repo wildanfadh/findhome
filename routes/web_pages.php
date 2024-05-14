@@ -6,11 +6,14 @@ use App\Http\Controllers\Pages\RekomendasiController;
 use App\Http\Controllers\Pages\SubKriteriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pages\UserController;
+use App\Http\Controllers\Pages\VerifikasiController;
 
 Route::group([
     'prefix' => 'page.user',
     'as' => 'page.user.',
 ], function () {
+    Route::get('index', [UserController::class, 'index'])->name('index');
+    Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang');
     Route::get('register_pengembang', [UserController::class, 'register_pengembang'])->name('register_pengembang');
     Route::get('myprofile', [UserController::class, 'myprofile'])->name('myprofile')->middleware('auth');
 });
@@ -32,6 +35,14 @@ Route::group([
     Route::get('rekomendasi', [RekomendasiController::class, 'rekomendasi'])->name('rekomendasi');
     Route::get('preferensi', [RekomendasiController::class, 'preferensi'])->name('preferensi')->middleware('umum');
     Route::get('rekomendasi_preferensi', [RekomendasiController::class, 'rekomendasi_preferensi'])->name('rekomendasi_preferensi')->middleware('umum');
+});
+
+Route::group([
+    'middleware' => ['auth', 'role:Admin'],
+    'prefix' => 'page.verifikasi',
+    'as' => 'page.verifikasi.',
+], function () {
+    Route::get('index', [VerifikasiController::class, 'index'])->name('index');
 });
 
 Route::group([

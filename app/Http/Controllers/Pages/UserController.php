@@ -8,6 +8,25 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        $user = User::all();
+        $data = [
+            'user' => $user,
+        ];
+        return view('app.pengguna.index', $data);
+    }
+
+    public function pengembang()
+    {
+        $user = User::all();
+        $data = [
+            'user' => $user,
+        ];
+        return view('app.pengguna.pengembang', $data);
+    }
+
     public function register_pengembang()
     {
         return view('auth.register_pengembang');

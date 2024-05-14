@@ -28,12 +28,36 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Master</span>
+                    <span class="hide-menu">Manajemen</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('page.verifikasi.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-check"></i>
+                        </span>
+                        <span class="hide-menu">Verifikasi</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('page.user.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-database"></i>
+                        </span>
+                        <span class="hide-menu">Pengguna</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('page.user.pengembang') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-database"></i>
+                        </span>
+                        <span class="hide-menu">Pengembang</span>
+                    </a>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('page.kriteria.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-layout-dashboard"></i>
+                            <i class="ti ti-database"></i>
                         </span>
                         <span class="hide-menu">Kriteria</span>
                     </a>
@@ -41,14 +65,14 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('page.subkriteria.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-home"></i>
+                            <i class="ti ti-database"></i>
                         </span>
                         <span class="hide-menu">Sub Kriteria</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">General</span>
+                    <span class="hide-menu">Umum</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('page.perumahan.list') }}" aria-expanded="false">

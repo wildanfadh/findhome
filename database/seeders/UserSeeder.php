@@ -19,8 +19,9 @@ class UserSeeder extends Seeder
         $userAdmin = User::create([
             'name' => 'Admin',
             'username' => 'admin',
+            'no_hp' => '0854567891230',
             'email' => 'Admin@mail.com',
-            'password' => Hash::make('administrator'),
+            'password' => Hash::make('password'),
             'created_at' => now()
         ]);
 
@@ -33,8 +34,9 @@ class UserSeeder extends Seeder
         $userUmum = User::create([
             'name' => 'Pembeli 1 (Test)',
             'username' => 'pembeli1',
+            'no_hp' => '0854567125864',
             'email' => 'pembeli@mail.com',
-            'password' => Hash::make('pembeli'),
+            'password' => Hash::make('password'),
             'created_at' => now()
         ]);
 

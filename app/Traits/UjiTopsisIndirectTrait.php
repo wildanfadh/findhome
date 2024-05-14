@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-trait AjaxResponserTrait
+trait UjiTopsisIndirectTrait
 {
 
     private function __construct()
