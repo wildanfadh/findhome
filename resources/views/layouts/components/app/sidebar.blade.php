@@ -62,14 +62,14 @@
                         <span class="hide-menu">Kriteria</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('page.subkriteria.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-database"></i>
                         </span>
                         <span class="hide-menu">Sub Kriteria</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Umum</span>

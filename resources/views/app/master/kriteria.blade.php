@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <table id="kriteriaTable" class="table">
                         <thead>
-                            <tr>
+                            <tr class="text-start">
                                 <th>NO</th>
                                 <th>Nama</th>
                                 <th>Sifat</th>
@@ -126,6 +126,71 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal List Data Sub Kriteria -->
+    <div class="modal fade" id="listSubKriteriaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="listSubKriteriaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="listSubKriteriaModalLabel">Daftar Sub Kriteria <span
+                            id="titleListSubKriteriaOf"></span></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <table id="tableSubKriteria" class="display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Uraian</th>
+                                        <th>Nilai</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tambah  Modal Sub Kriteria -->
+    <div class="modal fade" id="tambahSubKriteriaModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="tambahSubKriteriaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="tambahSubKriteriaModalLabel">Tambah Sub Kriteria</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTambahSubKriteria" autocomplete="off">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="inputTambahUraianSK" class="form-label">Uraian</label>
+                            <input type="text" name="uraian" class="form-control" id="inputTambahUraianSK"
+                                placeholder="uraian sub kriteria" @required(true)>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputTambahNilaiSK" class="form-label">Nilai</label>
+                            <input type="number" name="nilai" class="form-control" id="inputTambahNilaiSK"
+                                placeholder="nilai sub kriteria" @required(true)>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -151,6 +216,31 @@
                 }, {
                     data: 'bobot',
                     name: 'bobot'
+                }, {
+                    data: 'action',
+                    name: 'action'
+                }],
+            });
+
+            var urlSub = `{!! route('ajax.subkriteria.index') !!}`;
+            var table = $('#tableSubKriteria').DataTable({
+                processing: true,
+                ordering: false,
+                serverSide: true,
+                searching: false,
+                // info: false,
+                ordering: false,
+                // paging: false,
+                ajax: urlSub,
+                columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                }, {
+                    data: 'uraian',
+                    name: 'uraian'
+                }, {
+                    data: 'nilai',
+                    name: 'nilai'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -400,6 +490,16 @@
 
             });
             {{-- --------------------------- Delete Function -------------------------- --}}
+
+            {{-- ------------------------- Tambah Sub Function ------------------------ --}}
+            $(document).on('click', '.sub', function() {
+                console.log('sub');
+                let data_kriteria = $(this).data('single_source');
+                console.log(data_kriteria);
+                $('#listSubKriteriaModal').modal('show');
+
+            });
+            {{-- ------------------------- Tambah Sub Function ------------------------ --}}
         });
     </script>
 @endpush

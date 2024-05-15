@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Ajax\KriteriaController;
+use App\Http\Controllers\Ajax\SubKriteriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Ajax\UserController;
 
@@ -27,4 +28,15 @@ Route::group([
     Route::post('store', [KriteriaController::class, 'store'])->name('store');
     Route::put('update/{id}', [KriteriaController::class, 'update'])->name('update');
     Route::delete('delete/{id}', [KriteriaController::class, 'destroy'])->name('delete');
+});
+
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'ajax.subkriteria',
+    'as' => 'ajax.subkriteria.',
+], function () {
+    Route::get('/', [SubKriteriaController::class, 'index'])->name('index');
+    Route::post('store', [SubKriteriaController::class, 'store'])->name('store');
+    Route::put('update/{id}', [SubKriteriaController::class, 'update'])->name('update');
+    Route::delete('delete/{id}', [SubKriteriaController::class, 'destroy'])->name('delete');
 });

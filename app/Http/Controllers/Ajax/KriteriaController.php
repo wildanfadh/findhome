@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ajax;
 
+use App\Enums\SifatKriteria;
 use App\Models\Kriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,17 +16,23 @@ class KriteriaController extends Controller
         $data = Kriteria::all();
 
         $dataTable = Datatables::of($data)->addIndexColumn()
+            ->addColumn('sifat', function ($data) {
+                $result = SifatKriteria::fromValue($data->sifat);
+                return $result->key;
+            })
             ->addColumn('action', function ($data) {
-
+                $urlSubKriteria = route('page.subkriteria.index');
                 // ========== Action ==========
+                // $addSubBtn = "<a class='btn btn-sm btn-primary add-sub' href={$urlSubKriteria} data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</a>";
+                $addSubBtn = "<button class='btn btn-sm btn-info sub' data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</button>";
                 $editBtn = "<button class='btn btn-sm btn-warning edit' data-single_source='{$data}'><i class='ti ti-pencil'></i></button>";
                 $deleteBtn = "<button class='btn btn-sm btn-danger delete' data-single_source='{$data}'><i class='ti ti-trash'></i></button>";
 
-                $actionBtn = $editBtn . $deleteBtn;
+                $actionBtn = $addSubBtn . $editBtn . $deleteBtn;
                 // ========== End Action ==========
 
                 return $actionBtn;
-            })->rawColumns(['action']);
+            })->rawColumns(['sifat', 'action']);
         return $dataTable->make(true);
     }
 

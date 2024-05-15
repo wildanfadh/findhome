@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('sub_kriteria', function (Blueprint $table) {
             $table->id();
-            $table->integer('kriteria_id')->unsigned()->comment('ID  dari tabel kriteria');
-            $table->string('nama', 100)->nullable(false)->comment('Nama sub kriteria');
+            $table->integer('kriteria_id')->unsigned()->comment('ID dari tabel kriteria');
+            $table->string('uraian', 100)->nullable(false)->comment('Uraian sub kriteria');
             $table->float('nilai',  8, 2)->default(0)->comment('Nilai atau bobot dari sub kriteria');
             $table->timestamps();
         });
