@@ -9,8 +9,8 @@ class KriteriaController extends Controller
 {
     public function index()
     {
-        $hs = head_source(['DATATABLESBS5']);
-        $js = script_source(['DATATABLES', 'DATATABLESBS5']);
+        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
 
         $data = [
             "HeadSource" => $hs,

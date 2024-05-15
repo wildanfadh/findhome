@@ -16939,6 +16939,7 @@ fieldset:disabled .btn {
 }
 .page-wrapper {
     position: relative;
+    background-color: #f5f7ff;
 }
 .body-wrapper {
     position: relative;

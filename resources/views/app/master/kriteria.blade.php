@@ -185,7 +185,7 @@
                     timeout: 5000,
                     beforeSend: function() {
                         // show spinner or loader
-
+                        $('#kriteriaTable').block();
                     },
                 }).done(function(data, textStatus, jqXHR) {
                     // Process data, as received in data parameter
@@ -194,20 +194,41 @@
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
                     if (timeTakenInMs > 2000) {
-                        alert('AJAX response takes a long time');
+                        Swal.fire({
+                            toast: true,
+                            title: "Warning!",
+                            text: "AJAX response takes a long time.",
+                            icon: "warning"
+                        });
                     } else {
                         // show success message
-                        alert('Berhasil');
+                        Swal.fire({
+                            toast: true,
+                            title: "Berhasil!",
+                            text: data.message,
+                            icon: "success"
+                        });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    alert('Gagal');
+                    var errors = objectToArray(jqXHR.responseJSON
+                        .errors);
+
+                    return errors.forEach(element => {
+                        Swal.fire({
+                            toast: true,
+                            title: "Gagal!",
+                            text: element[1][0],
+                            icon: "danger"
+                        });
+                    });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
                     $('#formTambahKriteria').trigger('reset');
                     $('#tambahModal').modal('hide');
                     table.draw();
+                    $('#kriteriaTable').unblock();
                 });
             });
             {{-- --------------------------- Tambah Function -------------------------- --}}
@@ -249,7 +270,7 @@
                     timeout: 5000,
                     beforeSend: function() {
                         // show spinner or loader
-
+                        $('#kriteriaTable').block();
                     },
                 }).done(function(data, textStatus, jqXHR) {
                     // Process data, as received in data parameter
@@ -258,20 +279,41 @@
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
                     if (timeTakenInMs > 2000) {
-                        alert('AJAX response takes a long time');
+                        Swal.fire({
+                            toast: true,
+                            title: "Warning!",
+                            text: "AJAX response takes a long time.",
+                            icon: "warning"
+                        });
                     } else {
                         // show success message
-                        alert('Berhasil');
+                        Swal.fire({
+                            toast: true,
+                            title: "Berhasil!",
+                            text: data.message,
+                            icon: "success"
+                        });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    alert('Gagal');
+                    var errors = objectToArray(jqXHR.responseJSON
+                        .errors);
+
+                    return errors.forEach(element => {
+                        Swal.fire({
+                            toast: true,
+                            title: "Gagal!",
+                            text: element[1][0],
+                            icon: "danger"
+                        });
+                    });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
                     $('#formEditKriteria').trigger('reset');
                     $('#editModal').modal('hide');
                     table.draw();
+                    $('#kriteriaTable').unblock();
                 });
             });
             {{-- --------------------------- Update Function -------------------------- --}}
@@ -283,42 +325,79 @@
                 let data = $(this).data('single_source');
                 console.log(data);
 
-                var url = `{{ url('ajax.kriteria/delete') }}/` + data.id;
-                // url.replaceAll('{idKriteria}', id);
-                console.log(url);
 
-                $.ajax({
-                    type: 'DELETE',
-                    url: url,
-                    data: {
-                        "_token": `{{ csrf_token() }}`,
-                    },
-                    dataType: 'json',
-                    timeout: 5000,
-                    beforeSend: function() {
-                        // show spinner or loader
+                Swal.fire({
+                    toast: true,
+                    title: "Apakah anda yakin?",
+                    text: "Anda akan menghapus data ini!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
 
-                    },
-                }).done(function(data, textStatus, jqXHR) {
-                    // Process data, as received in data parameter
+                        // required for ajax request
+                        var msBeforeAjaxCall = new Date().getTime();
 
-                    // Send warning log message if response took longer than 2 seconds
-                    var msAfterAjaxCall = new Date().getTime();
-                    var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
-                    if (timeTakenInMs > 2000) {
-                        alert('AJAX response takes a long time');
-                    } else {
-                        // show success message
-                        alert('Berhasil');
+                        var url = `{{ url('ajax.kriteria/delete') }}/` + data.id;
+                        // url.replaceAll('{idKriteria}', id);
+                        console.log(url);
+
+                        $.ajax({
+                            type: 'DELETE',
+                            url: url,
+                            data: {
+                                "_token": `{{ csrf_token() }}`,
+                            },
+                            dataType: 'json',
+                            timeout: 5000,
+                            beforeSend: function() {
+                                // show spinner or loader
+                                $('#kriteriaTable').block();
+                            },
+                        }).done(function(data, textStatus, jqXHR) {
+                            // Process data, as received in data parameter
+
+                            // Send warning log message if response took longer than 2 seconds
+                            var msAfterAjaxCall = new Date().getTime();
+                            var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
+                            if (timeTakenInMs > 2000) {
+                                // alert('AJAX response takes a long time');
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Warning!",
+                                    text: "AJAX response takes a long time.",
+                                    icon: "warning"
+                                });
+                            } else {
+                                // show success message
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Terhapus!",
+                                    text: "Data sudah terhapus.",
+                                    icon: "success"
+                                });
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            // Request failed. Show error message to user.
+                            // errorThrown has error message, or 'timeout' in case of timeout.
+                            Swal.fire({
+                                toast: true,
+                                title: "Gagal!",
+                                text: "Data gagal terhapus.",
+                                icon: "danger"
+                            });
+                        }).always(function(jqXHR, textStatus, errorThrown) {
+                            // Hide spinner or loader
+                            $('#kriteriaTable').unblock();
+                            table.draw();
+                        });
+
                     }
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    // Request failed. Show error message to user.
-                    // errorThrown has error message, or 'timeout' in case of timeout.
-                    alert('Gagal');
-                }).always(function(jqXHR, textStatus, errorThrown) {
-                    // Hide spinner or loader
-                    table.draw();
                 });
+
             });
             {{-- --------------------------- Delete Function -------------------------- --}}
         });
