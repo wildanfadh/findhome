@@ -6,6 +6,7 @@ use App\Models\SubKriteria;
 use App\Enums\SifatKriteria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Kriteria;
 use Yajra\DataTables\Facades\DataTables;
 
 class SubKriteriaController extends Controller
@@ -25,7 +26,27 @@ class SubKriteriaController extends Controller
                 // ========== End Action ==========
 
                 return $actionBtn;
-            })->rawColumns(['sifat', 'action']);
+            })->rawColumns(['action']);
+        return $dataTable->make(true);
+    }
+
+    public function data_by_kriteria(Request $request, $id_kriteria)
+    {
+        $data = Kriteria::find($id_kriteria)->subKriterias;
+        // dd($data);
+
+        $dataTable = DataTables::of($data)->addIndexColumn()
+            ->addColumn('action', function ($data) {
+
+                // ========== Action ==========
+                $editBtn = "<button class='btn btn-sm btn-warning edit-sub' data-single_source='{$data}'><i class='ti ti-pencil'></i></button>";
+                $deleteBtn = "<button class='btn btn-sm btn-danger delete-sub' data-single_source='{$data}'><i class='ti ti-trash'></i></button>";
+
+                $actionBtn = $editBtn . $deleteBtn;
+                // ========== End Action ==========
+
+                return $actionBtn;
+            })->rawColumns(['action']);
         return $dataTable->make(true);
     }
 

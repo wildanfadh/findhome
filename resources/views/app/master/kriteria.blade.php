@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@push('styles')
+    <style>
+        /* .modal:nth-of-type(even) {
+                z-index: 1062 !important;
+            }
+
+            .modal-backdrop.show:nth-of-type(even) {
+                z-index: 1061 !important;
+            } */
+    </style>
+@endpush
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -133,14 +145,15 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="listSubKriteriaModalLabel">Daftar Sub Kriteria <span
-                            id="titleListSubKriteriaOf"></span></h1>
+                    <h1 class="modal-title fs-5" id="listSubKriteriaModalLabel">Daftar Sub Kriteria ( <span
+                            id="titleListSubKriteriaOf"></span> )</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-
+                            <button type="button" class="btn btn-xs btn-primary showmodal" data-bs-toggle="modal"
+                                data-bs-target="#tambahSubKriteriaModal">Tambah</button>
                             <table id="tableSubKriteria" class="display" style="width:100%">
                                 <thead>
                                     <tr>
@@ -223,7 +236,7 @@
             });
 
             var urlSub = `{!! route('ajax.subkriteria.index') !!}`;
-            var table = $('#tableSubKriteria').DataTable({
+            var tableSub = $('#tableSubKriteria').DataTable({
                 processing: true,
                 ordering: false,
                 serverSide: true,
@@ -491,13 +504,29 @@
             });
             {{-- --------------------------- Delete Function -------------------------- --}}
 
+            Array.from(document.getElementsByClassName('showmodal')).forEach((e) => {
+                e.addEventListener('click', function(element) {
+                    element.preventDefault();
+                    if (e.hasAttribute('data-show-modal')) {
+                        showModal(e.getAttribute('data-show-modal'));
+                    }
+                });
+            });
+            // Show modal dialog
+            function showModal(modal) {
+                const mid = document.getElementById(modal);
+                let myModal = new bootstrap.Modal(mid);
+                myModal.show();
+            }
             {{-- ------------------------- Tambah Sub Function ------------------------ --}}
             $(document).on('click', '.sub', function() {
                 console.log('sub');
-                let data_kriteria = $(this).data('single_source');
-                console.log(data_kriteria);
+                let kriteria = $(this).data('single_source');
+                console.log(kriteria);
                 $('#listSubKriteriaModal').modal('show');
-
+                $('#titleListSubKriteriaOf').html(kriteria.nama);
+                urlSub = `{{ url('ajax.subkriteria/data_by_kriteria') }}/` + kriteria.id;
+                tableSub.ajax.url(urlSub).draw();
             });
             {{-- ------------------------- Tambah Sub Function ------------------------ --}}
         });
