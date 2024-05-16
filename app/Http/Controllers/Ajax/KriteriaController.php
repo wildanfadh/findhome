@@ -21,10 +21,10 @@ class KriteriaController extends Controller
                 return $result->key;
             })
             ->addColumn('action', function ($data) {
-                $urlSubKriteria = route('page.subkriteria.index');
+                $urlSubKriteria = route('page.subkriteria.list_by_kriteria', $data->id);
                 // ========== Action ==========
-                // $addSubBtn = "<a class='btn btn-sm btn-primary add-sub' href={$urlSubKriteria} data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</a>";
-                $addSubBtn = "<button class='btn btn-sm btn-info sub' data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</button>";
+                $addSubBtn = "<a class='btn btn-sm btn-primary add-sub' href={$urlSubKriteria} data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</a>";
+                // $addSubBtn = "<button class='btn btn-sm btn-info sub' data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</button>";
                 $editBtn = "<button class='btn btn-sm btn-warning edit' data-single_source='{$data}'><i class='ti ti-pencil'></i></button>";
                 $deleteBtn = "<button class='btn btn-sm btn-danger delete' data-single_source='{$data}'><i class='ti ti-trash'></i></button>";
 

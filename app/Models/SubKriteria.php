@@ -22,7 +22,8 @@ class SubKriteria extends Model
      * @var array
      */
     protected $fillable = [
-        'nama',
+        'kriteria_id',
+        'uraian',
         'nilai',
     ];
 }

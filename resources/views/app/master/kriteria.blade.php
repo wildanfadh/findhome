@@ -2,13 +2,6 @@
 
 @push('styles')
     <style>
-        /* .modal:nth-of-type(even) {
-                z-index: 1062 !important;
-            }
-
-            .modal-backdrop.show:nth-of-type(even) {
-                z-index: 1061 !important;
-            } */
     </style>
 @endpush
 
@@ -83,6 +76,7 @@
                             <label for="inputTambahBobot" class="form-label">Bobot</label>
                             <input type="number" name="bobot" class="form-control" id="inputTambahBobot"
                                 placeholder="bobot kriteria dalam persentase" @required(true)>
+                            <div id="inputTambahBobotHelp" class="form-text">Berikan nilai dalam persentase.</div>
                         </div>
 
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
@@ -130,6 +124,7 @@
                             <label for="inputEditBobot" class="form-label">Bobot</label>
                             <input type="number" name="bobot" class="form-control" id="inputEditBobot"
                                 placeholder="bobot kriteria dalam persentase" @required(true)>
+                            <div id="inputEditBobotHelp" class="form-text">Berikan nilai dalam persentase.</div>
                         </div>
 
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
@@ -139,7 +134,7 @@
         </div>
     </div>
 
-    <!-- Modal List Data Sub Kriteria -->
+    {{-- <!-- Modal List Data Sub Kriteria -->
     <div class="modal fade" id="listSubKriteriaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="listSubKriteriaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -171,9 +166,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    <!-- Tambah  Modal Sub Kriteria -->
+    {{-- <!-- Tambah  Modal Sub Kriteria -->
     <div class="modal fade" id="tambahSubKriteriaModal" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="tambahSubKriteriaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -198,12 +193,13 @@
                                 placeholder="nilai sub kriteria" @required(true)>
                         </div>
 
-                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
+                        <button type="submit" class="btn btn-primary float-end"
+                            id="simpanBtnSubKriteria">Simpan</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 @push('scripts')
@@ -229,31 +225,6 @@
                 }, {
                     data: 'bobot',
                     name: 'bobot'
-                }, {
-                    data: 'action',
-                    name: 'action'
-                }],
-            });
-
-            var urlSub = `{!! route('ajax.subkriteria.index') !!}`;
-            var tableSub = $('#tableSubKriteria').DataTable({
-                processing: true,
-                ordering: false,
-                serverSide: true,
-                searching: false,
-                // info: false,
-                ordering: false,
-                // paging: false,
-                ajax: urlSub,
-                columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                }, {
-                    data: 'uraian',
-                    name: 'uraian'
-                }, {
-                    data: 'nilai',
-                    name: 'nilai'
                 }, {
                     data: 'action',
                     name: 'action'
@@ -504,31 +475,30 @@
             });
             {{-- --------------------------- Delete Function -------------------------- --}}
 
-            Array.from(document.getElementsByClassName('showmodal')).forEach((e) => {
-                e.addEventListener('click', function(element) {
-                    element.preventDefault();
-                    if (e.hasAttribute('data-show-modal')) {
-                        showModal(e.getAttribute('data-show-modal'));
-                    }
-                });
-            });
-            // Show modal dialog
-            function showModal(modal) {
-                const mid = document.getElementById(modal);
-                let myModal = new bootstrap.Modal(mid);
-                myModal.show();
-            }
-            {{-- ------------------------- Tambah Sub Function ------------------------ --}}
-            $(document).on('click', '.sub', function() {
-                console.log('sub');
-                let kriteria = $(this).data('single_source');
-                console.log(kriteria);
-                $('#listSubKriteriaModal').modal('show');
-                $('#titleListSubKriteriaOf').html(kriteria.nama);
-                urlSub = `{{ url('ajax.subkriteria/data_by_kriteria') }}/` + kriteria.id;
-                tableSub.ajax.url(urlSub).draw();
-            });
-            {{-- ------------------------- Tambah Sub Function ------------------------ --}}
+            // {{-- ------------------------- Tambah Sub Function ------------------------ --}}
+            // $(document).on('click', '.sub', function() {
+            //     console.log('sub');
+            //     let kriteria = $(this).data('single_source');
+            //     console.log(kriteria);
+            //     $('#listSubKriteriaModal').modal('show');
+            //     $('#titleListSubKriteriaOf').html(kriteria.nama);
+            //     urlSub = `{{ url('ajax.subkriteria/data_by_kriteria') }}/` + kriteria.id;
+            //     tableSub.ajax.url(urlSub).draw();
+            // });
+
+
+
+            // $(document).on('click', '#tambahSubKriteriaModal', function() {
+            //     $('#listSubKriteriaModal').modal({
+            //         backdrop: 'static',
+            //         keyboard: false
+            //     });
+            // });
+            // // $(document).on('click', '#simpanBtnSubKriteria', function() {
+            // //     $('#listSubKriteriaModal').modal('show');
+            // //     $('#simpanBtnSubKriteria').modal('hide');
+            // // });
+            // {{-- ------------------------- Tambah Sub Function ------------------------ --}}
         });
     </script>
 @endpush

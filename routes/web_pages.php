@@ -59,4 +59,5 @@ Route::group([
     'as' => 'page.subkriteria.',
 ], function () {
     Route::get('index', [SubKriteriaController::class, 'index'])->name('index');
+    Route::get('list_by_kriteria/{kriteria_id}', [SubKriteriaController::class, 'list_by_kriteria'])->name('list_by_kriteria');
 });
