@@ -108,5 +108,22 @@ class SubKriteriaController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
+        try {
+            $data = SubKriteria::find($id);
+            $data->delete();
+            DB::commit();
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil dihapus',
+                'data' => null
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }
