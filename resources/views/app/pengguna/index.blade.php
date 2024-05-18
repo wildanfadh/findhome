@@ -23,6 +23,7 @@
                                 <th>Username</th>
                                 <th>No HP</th>
                                 <th>Email</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                     </table>
@@ -37,7 +38,7 @@
         $(document).ready(function() {
 
             {{-- ----------------------------- Datatables ----------------------------- --}}
-            var url = `{!! route('ajax.pengguna.index') !!}`;
+            var url = `{!! route('ajax.user.index') !!}`;
             var table = $('#penggunaTable').DataTable({
                 processing: true,
                 ordering: false,
@@ -47,8 +48,8 @@
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
                 }, {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'name',
+                    name: 'name'
                 }, {
                     data: 'username',
                     name: 'username'

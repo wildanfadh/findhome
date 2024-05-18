@@ -10,9 +10,56 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterPengembangRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterUmumRequest;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $data = User::with('roles')->get();
+        $dataTable = DataTables::of($data)->addIndexColumn()
+            ->addColumn('action', function ($data) {
+
+                // ========== Action ==========
+                if ($data->is_active) {
+                    $activeBtn = "<button class='btn btn-sm btn-success active' data-single_source='{$data}'>Active</button>";
+                } else {
+                    $activeBtn = "<button class='btn btn-sm btn-danger inactive' data-single_source='{$data}'>InActive</button>";
+                }
+
+                $actionBtn = $activeBtn;
+                // ========== End Action ==========
+
+                return $actionBtn;
+            })->rawColumns(['action']);
+        return $dataTable->make(true);
+    }
+
+    public function pengembang()
+    {
+        $data = User::with('roles')->get();
+        $dataTable = DataTables::of($data)->addIndexColumn()
+            ->addColumn('alamat', function ($data) {
+                $alamat = 'Alamat';
+                return $alamat;
+            })
+            ->addColumn('action', function ($data) {
+
+                // ========== Action ==========
+                if ($data->is_active) {
+                    $activeBtn = "<button class='btn btn-sm btn-success active' data-single_source='{$data}'>Active</button>";
+                } else {
+                    $activeBtn = "<button class='btn btn-sm btn-danger inactive' data-single_source='{$data}'>InActive</button>";
+                }
+
+                $actionBtn = $activeBtn;
+                // ========== End Action ==========
+
+                return $actionBtn;
+            })->rawColumns(['action']);
+        return $dataTable->make(true);
+    }
+
     public function register_umum(RegisterUmumRequest $request)
     {
         DB::beginTransaction();

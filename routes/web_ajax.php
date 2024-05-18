@@ -13,7 +13,8 @@ Route::group([
     'prefix' => 'ajax.user',
     'as' => 'ajax.user.',
 ], function () {
-    // Route::post('/', [UserController::class, 'index'])->name('index');
+    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang');
     Route::put('update/{id}', [UserController::class, 'update'])->name('update');
     Route::put('updatepassword/{id}', [UserController::class, 'updatePassword'])->name('updatepassword');
     Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('delete');
