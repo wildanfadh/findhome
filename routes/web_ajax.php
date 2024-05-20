@@ -17,6 +17,7 @@ Route::group([
     Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang');
     Route::put('update/{id}', [UserController::class, 'update'])->name('update');
     Route::put('updatepassword/{id}', [UserController::class, 'updatePassword'])->name('updatepassword');
+    Route::get('active_nonactive/{id}', [UserController::class, 'active_nonactive'])->name('active_nonactive');
     Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('delete');
 });
 

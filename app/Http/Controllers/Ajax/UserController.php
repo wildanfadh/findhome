@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterPengembangRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\RegisterUmumRequest;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\RegisterUmumRequest;
+use App\Http\Requests\RegisterPengembangRequest;
 
 class UserController extends Controller
 {
@@ -19,12 +20,15 @@ class UserController extends Controller
         $data = User::with('roles')->get();
         $dataTable = DataTables::of($data)->addIndexColumn()
             ->addColumn('action', function ($data) {
-
+                // dd($data->roles[0]);
+                $activeBtn = '';
                 // ========== Action ==========
-                if ($data->is_active) {
-                    $activeBtn = "<button class='btn btn-sm btn-success active' data-single_source='{$data}'>Active</button>";
-                } else {
-                    $activeBtn = "<button class='btn btn-sm btn-danger inactive' data-single_source='{$data}'>InActive</button>";
+                if ($data->roles[0]->name != 'Admin') {
+                    if ($data->is_active == 1) {
+                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Active</button>";
+                    } else {
+                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>InActive</button>";
+                    }
                 }
 
                 $actionBtn = $activeBtn;
@@ -45,11 +49,14 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($data) {
 
+                $activeBtn = '';
                 // ========== Action ==========
-                if ($data->is_active) {
-                    $activeBtn = "<button class='btn btn-sm btn-success active' data-single_source='{$data}'>Active</button>";
-                } else {
-                    $activeBtn = "<button class='btn btn-sm btn-danger inactive' data-single_source='{$data}'>InActive</button>";
+                if ($data->roles[0]->name != 'Admin') {
+                    if ($data->is_active == 1) {
+                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Active</button>";
+                    } else {
+                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>InActive</button>";
+                    }
                 }
 
                 $actionBtn = $activeBtn;
@@ -79,18 +86,18 @@ class UserController extends Controller
             $last->assignRole([$role->id]);
 
             DB::commit();
-            return [
-                "success" => true,
-                "message" => "Data berhasil ditambahkan",
-                "data" => $data_requests,
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil ditambahkan',
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return [
-                "success" => false,
-                "message" => $e->getMessage(),
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -122,18 +129,18 @@ class UserController extends Controller
             $last->assignRole([$role->id]);
 
             DB::commit();
-            return [
-                "success" => true,
-                "message" => "Data berhasil ditambahkan",
-                "data" => $data_requests,
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil ditambahkan',
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return [
-                "success" => false,
-                "message" => $e->getMessage(),
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -151,18 +158,18 @@ class UserController extends Controller
             $data->update($data_requests);
 
             DB::commit();
-            return [
-                "success" => true,
-                "message" => "Data berhasil diupdate",
-                "data" => $data_requests,
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil diupdate',
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return [
-                "success" => false,
-                "message" => $e->getMessage(),
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -185,18 +192,49 @@ class UserController extends Controller
 
             DB::commit();
 
-            return [
-                "success" => true,
-                "message" => $id ? "Data berhasil diupdate" : "Data berhasil ditambahkan",
-                "data" => $data_requests,
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil diupdate',
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return [
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function active_nonactive(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = User::find($id);
+            if ($id && !$data) return [
                 "success" => false,
-                "message" => $e->getMessage(),
+                "message" => "No data with ID $id",
             ];
+
+            $data_requests = [
+                "is_active" => $request->is_active,
+            ];
+
+            $data->update($data_requests);
+
+            DB::commit();
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil diupdate',
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -215,18 +253,18 @@ class UserController extends Controller
             $data->delete();
 
             DB::commit();
-            return [
-                "success" => true,
-                "message" => "Data berhasil dihapus",
-                "data" => null,
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil dihapus',
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return [
-                "success" => false,
-                "message" => $e->getMessage(),
-            ];
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 }
