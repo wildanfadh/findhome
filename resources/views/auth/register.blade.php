@@ -167,7 +167,7 @@
                     timeout: 5000,
                     beforeSend: function() {
                         // show spinner or loader
-
+                        form_registrasi.block();
                     },
                 }).done(function(data, textStatus, jqXHR) {
                     // Process data, as received in data parameter
@@ -176,18 +176,39 @@
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
                     if (timeTakenInMs > 2000) {
-                        alert('AJAX response takes a long time');
+                        Swal.fire({
+                            toast: true,
+                            title: "Warning!",
+                            text: "AJAX response takes a long time.",
+                            icon: "warning"
+                        });
                     } else {
                         // show success message
-                        alert('berhasil');
+                        Swal.fire({
+                            toast: true,
+                            title: "Berhasil!",
+                            text: data.message,
+                            icon: "success"
+                        });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    alert('Request failed')
+                    var errors = objectToArray(jqXHR.responseJSON
+                        .errors);
+
+                    return errors.forEach(element => {
+                        Swal.fire({
+                            toast: true,
+                            title: "Gagal!",
+                            text: element[1][0],
+                            icon: "danger"
+                        });
+                    });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
                     if (textStatus == 'success') {
+                        form_registrasi.unblock();
                         window.location.href = "{{ route('login') }}";
                     }
 

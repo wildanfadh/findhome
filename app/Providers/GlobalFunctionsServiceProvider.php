@@ -12,6 +12,7 @@ class GlobalFunctionsServiceProvider extends ServiceProvider
     public function register(): void
     {
         require_once base_path() . '/app/Functions/SourceFunctions.php';
+        require_once base_path() . '/app/Functions/CustomFunctions.php';
     }
 
     /**

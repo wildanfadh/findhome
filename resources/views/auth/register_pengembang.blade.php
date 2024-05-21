@@ -48,7 +48,7 @@
                                     <div class="mb-4">
                                         <label for="sertifikat_sp2" class="form-label">Sertifikat SP2</label>
                                         <input type="file" name="sertifikat_sp2" class="form-control" id="sertifikat_sp2"
-                                            required>
+                                            accept="application/pdf" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="alamat" class="form-label">Alamat</label>
@@ -144,7 +144,8 @@
                 var username = $("input[name='username']").val();
                 var no_hp = $("input[name='no_hp']").val();
                 var email = $("input[name='email']").val();
-                var sertifikat = $("input[name='sertifikat']")[0].files[0];
+                var sertifikat = $("input[name='sertifikat_sp2']")[0].files[0];
+                console.log('sertifikat:', sertifikat);
                 var alamat = $("textarea[name='alamat']").val();
                 var password = $("input[name='password']").val();
                 var password_conf = $("input[name='password_conf']").val();
@@ -159,7 +160,8 @@
                 // };
 
                 let formData = new FormData();
-                formData.append('nama', nama);
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('name', nama);
                 formData.append('username', username);
                 formData.append('no_hp', no_hp);
                 formData.append('email', email);
@@ -168,13 +170,13 @@
                 formData.append('password', password);
                 formData.append('password_confirmation', password_conf);
 
-                console.log(data);
+                console.log(formData);
 
                 // console.log('form registrasi');
                 // required for ajax request
                 var msBeforeAjaxCall = new Date().getTime();
 
-                var url = `{{ route('register_umum') }}`;
+                var url = `{{ route('register_pengembang') }}`;
 
                 $.ajax({
                     headers: {
@@ -183,7 +185,7 @@
                     },
                     type: 'post',
                     url: url,
-                    data: data,
+                    data: formData,
                     dataType: 'json',
                     timeout: 5000,
                     cache: false,
@@ -191,7 +193,7 @@
                     processData: false,
                     beforeSend: function() {
                         // show spinner or loader
-
+                        form_registrasi_pengembang.block();
                     },
                 }).done(function(data, textStatus, jqXHR) {
                     // Process data, as received in data parameter
@@ -200,18 +202,39 @@
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
                     if (timeTakenInMs > 2000) {
-                        alert('AJAX response takes a long time');
+                        Swal.fire({
+                            toast: true,
+                            title: "Warning!",
+                            text: "AJAX response takes a long time.",
+                            icon: "warning"
+                        });
                     } else {
                         // show success message
-                        alert('berhasil');
+                        Swal.fire({
+                            toast: true,
+                            title: "Berhasil!",
+                            text: data.message,
+                            icon: "success"
+                        });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    alert('Request failed')
+                    var errors = objectToArray(jqXHR.responseJSON
+                        .errors);
+
+                    return errors.forEach(element => {
+                        Swal.fire({
+                            toast: true,
+                            title: "Gagal!",
+                            text: element[1][0],
+                            icon: "danger"
+                        });
+                    });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
                     if (textStatus == 'success') {
+                        form_registrasi_pengembang.unblock();
                         window.location.href = "{{ route('login') }}";
                     }
 

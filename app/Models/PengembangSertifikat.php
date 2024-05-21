@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pengembang extends Model
+class PengembangSertifikat extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Pengembang extends Model
      *
      * @var string
      */
-    protected $table = 'pengembang';
+    protected $table = 'pengembang_sertifikat';
 
     /**
      * The attributes that are mass assignable.
@@ -22,10 +22,11 @@ class Pengembang extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        // 'sertifikat_sp2',
-        'alamat',
-        'is_verified',
+        'pengembang_id',
+        'path',
+        'name',
+        'original_name',
+        'mime',
     ];
 
     public function akun()

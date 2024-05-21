@@ -39,7 +39,13 @@ class UserController extends Controller
 
     public function register_pengembang()
     {
-        return view('auth.register_pengembang');
+        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
+        $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
+        ];
+        return view('auth.register_pengembang', $data);
     }
 
     public function myprofile()

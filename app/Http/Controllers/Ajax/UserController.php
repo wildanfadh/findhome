@@ -128,6 +128,13 @@ class UserController extends Controller
             // add role
             $last->assignRole([$role->id]);
 
+            // sertifikat
+            if ($request->hasFile('sertifikat')) {
+                $file = $request->file('sertifikat');
+                $dir = "SERTIFIKAT_PENGEMBANG";
+                store_file($data, $dir, $file);
+            }
+
             DB::commit();
             return $this->conditionalResponse((object) [
                 'success' => true,

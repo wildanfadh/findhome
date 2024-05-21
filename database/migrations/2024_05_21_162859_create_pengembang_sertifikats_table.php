@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengembang', function (Blueprint $table) {
+        Schema::create('pengembang_sertifikat', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned()->nullable(false)->comment('ID Pengguna');
-            // $table->string('sertifikat_sp2', 100);
-            $table->text('alamat');
-            $table->boolean('is_verified');
+            $table->integer('pengembang_id')->unsigned();
+            $table->string('path');
+            $table->string('name');
+            $table->string('original_name');
+            $table->string('mime', 5);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengembang');
+        Schema::dropIfExists('pengembang_sertifikat');
     }
 };
