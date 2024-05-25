@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Ajax\KriteriaController;
+use App\Http\Controllers\Ajax\PerumahanController;
 use App\Http\Controllers\Ajax\SubKriteriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Ajax\UserController;
@@ -42,4 +43,15 @@ Route::group([
     Route::post('store', [SubKriteriaController::class, 'store'])->name('store');
     Route::put('update/{id}', [SubKriteriaController::class, 'update'])->name('update');
     Route::delete('delete/{id}', [SubKriteriaController::class, 'destroy'])->name('delete');
+});
+
+Route::group([
+    'middleware' => ['auth', 'role:Pengembang'],
+    'prefix' => 'ajax.proyekperumahan',
+    'as' => 'ajax.proyekperumahan.',
+], function () {
+    Route::get('/', [PerumahanController::class, 'index'])->name('index');
+    Route::post('store', [PerumahanController::class, 'store'])->name('store');
+    Route::put('update/{id}', [PerumahanController::class, 'update'])->name('update');
+    Route::delete('delete/{id}', [PerumahanController::class, 'destroy'])->name('delete');
 });

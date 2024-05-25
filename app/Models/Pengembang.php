@@ -32,4 +32,9 @@ class Pengembang extends Model
     {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
+
+    public function file()
+    {
+        return $this->hasOne(PengembangSertifikat::class, 'pengembang_id', 'id');
+    }
 }

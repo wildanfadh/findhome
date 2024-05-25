@@ -15,6 +15,18 @@ class PerumahanController extends Controller
         return view('app.perumahan.list', $data);
     }
 
+    public function proyek_perumahan()
+    {
+        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
+
+        $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
+        ];
+        return view('app.perumahan.proyek', $data);
+    }
+
     public function detail_perumahan($id)
     {
         $perumahan = Perumahan::find($id);

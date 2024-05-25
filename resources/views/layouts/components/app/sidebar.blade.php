@@ -26,43 +26,46 @@
                         <span class="hide-menu">Beranda</span>
                     </a>
                 </li>
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Manajemen</span>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('page.verifikasi.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-check"></i>
-                        </span>
-                        <span class="hide-menu">Verifikasi</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('page.user.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-database"></i>
-                        </span>
-                        <span class="hide-menu">Pengguna</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('page.user.pengembang') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-database"></i>
-                        </span>
-                        <span class="hide-menu">Pengembang</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('page.kriteria.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-database"></i>
-                        </span>
-                        <span class="hide-menu">Kriteria</span>
-                    </a>
-                </li>
-                {{-- <li class="sidebar-item">
+                @hasanyrole('Admin|Pengembang')
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Manajemen</span>
+                    </li>
+                @endhasanyrole
+                @hasanyrole('Admin')
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.verifikasi.index') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-check"></i>
+                            </span>
+                            <span class="hide-menu">Verifikasi</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.user.index') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-database"></i>
+                            </span>
+                            <span class="hide-menu">Pengguna</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.user.pengembang') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-database"></i>
+                            </span>
+                            <span class="hide-menu">Pengembang</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.kriteria.index') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-database"></i>
+                            </span>
+                            <span class="hide-menu">Kriteria</span>
+                        </a>
+                    </li>
+                    {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('page.subkriteria.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-database"></i>
@@ -70,6 +73,17 @@
                         <span class="hide-menu">Sub Kriteria</span>
                     </a>
                 </li> --}}
+                @endhasanyrole
+                @hasanyrole('Pengembang')
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.perumahan.proyek') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-home-cog"></i>
+                            </span>
+                            <span class="hide-menu">Proyek</span>
+                        </a>
+                    </li>
+                @endhasanyrole
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Umum</span>

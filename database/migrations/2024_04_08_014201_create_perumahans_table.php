@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama', 100)->comment('Nama Perumahan');
             $table->text('alamat');
             $table->longText('keterangan');
+            $table->boolean('is_verified');
             $table->timestamps();
         });
     }

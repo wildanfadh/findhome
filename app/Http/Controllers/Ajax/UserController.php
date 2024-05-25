@@ -41,7 +41,7 @@ class UserController extends Controller
 
     public function pengembang()
     {
-        $data = User::with('roles')->get();
+        $data = User::with(['roles'])->has('dataPengembang')->get();
         $dataTable = DataTables::of($data)->addIndexColumn()
             ->addColumn('alamat', function ($data) {
                 $alamat = 'Alamat';
@@ -132,7 +132,7 @@ class UserController extends Controller
             if ($request->hasFile('sertifikat')) {
                 $file = $request->file('sertifikat');
                 $dir = "SERTIFIKAT_PENGEMBANG";
-                store_file($data, $dir, $file);
+                store_sertifikat($last, $dir, $file);
             }
 
             DB::commit();

@@ -9,11 +9,12 @@ use App\Http\Controllers\Pages\UserController;
 use App\Http\Controllers\Pages\VerifikasiController;
 
 Route::group([
+    'middleware' => ['auth'],
     'prefix' => 'page.user',
     'as' => 'page.user.',
 ], function () {
-    Route::get('index', [UserController::class, 'index'])->name('index');
-    Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang');
+    Route::get('index', [UserController::class, 'index'])->name('index')->middleware('admin');
+    Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang')->middleware('admin');
     Route::get('register_pengembang', [UserController::class, 'register_pengembang'])->name('register_pengembang');
     Route::get('myprofile', [UserController::class, 'myprofile'])->name('myprofile')->middleware('auth');
 });
@@ -24,6 +25,7 @@ Route::group([
     'as' => 'page.perumahan.',
 ], function () {
     Route::get('list', [PerumahanController::class, 'list_perumahan'])->name('list');
+    Route::get('proyek', [PerumahanController::class, 'proyek_perumahan'])->name('proyek');
     Route::get('detail/{id}', [PerumahanController::class, 'detail_perumahan'])->name('detail');
 });
 

@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">Master Data Kriteria</h5>
-            <p class="mb-0">This is a sample page </p>
+            {{-- <p class="mb-0">This is a sample page </p> --}}
         </div>
     </div>
 
@@ -267,7 +267,7 @@
                     // Send warning log message if response took longer than 2 seconds
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
-                    if (timeTakenInMs > 2000) {
+                    if (timeTakenInMs > 10000) {
                         Swal.fire({
                             toast: true,
                             title: "Warning!",
@@ -280,7 +280,9 @@
                             toast: true,
                             title: "Berhasil!",
                             text: data.message,
-                            icon: "success"
+                            icon: "success",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -294,15 +296,19 @@
                             toast: true,
                             title: "Gagal!",
                             text: element[1][0],
-                            icon: "danger"
+                            icon: "danger",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
-                    $('#formTambahKriteria').trigger('reset');
-                    $('#tambahModal').modal('hide');
-                    table.draw();
-                    $('#kriteriaTable').unblock();
+                    if (textStatus == 'success') {
+                        $('#formTambahKriteria').trigger('reset');
+                        $('#tambahModal').modal('hide');
+                        table.draw();
+                        $('#kriteriaTable').unblock();
+                    }
                 });
             });
             {{-- --------------------------- Tambah Function -------------------------- --}}
@@ -352,7 +358,7 @@
                     // Send warning log message if response took longer than 2 seconds
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
-                    if (timeTakenInMs > 2000) {
+                    if (timeTakenInMs > 10000) {
                         Swal.fire({
                             toast: true,
                             title: "Warning!",
@@ -365,7 +371,9 @@
                             toast: true,
                             title: "Berhasil!",
                             text: data.message,
-                            icon: "success"
+                            icon: "success",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -379,15 +387,19 @@
                             toast: true,
                             title: "Gagal!",
                             text: element[1][0],
-                            icon: "danger"
+                            icon: "danger",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     });
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
-                    $('#formEditKriteria').trigger('reset');
-                    $('#editModal').modal('hide');
-                    table.draw();
-                    $('#kriteriaTable').unblock();
+                    if (textStatus == 'success') {
+                        $('#formEditKriteria').trigger('reset');
+                        $('#editModal').modal('hide');
+                        table.draw();
+                        $('#kriteriaTable').unblock();
+                    }
                 });
             });
             {{-- --------------------------- Update Function -------------------------- --}}

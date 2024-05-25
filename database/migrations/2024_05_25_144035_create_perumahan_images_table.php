@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengembang_sertifikat', function (Blueprint $table) {
+        Schema::create('perumahan_image', function (Blueprint $table) {
             $table->id();
-            $table->integer('pengembang_id')->unsigned();
+            $table->integer('perumahan_id')->unsigned();
             $table->string('path');
             $table->string('name');
             $table->string('original_name');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengembang_sertifikat');
+        Schema::dropIfExists('perumahan_image');
     }
 };

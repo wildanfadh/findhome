@@ -29,8 +29,8 @@ class PengembangSertifikat extends Model
         'mime',
     ];
 
-    public function akun()
+    public function pengembang()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(Pengembang::class, 'id', 'pengembang_id');
     }
 }

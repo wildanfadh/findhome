@@ -2,25 +2,22 @@
 
 use Illuminate\Support\Facades\Storage;
 
-function store_file($data, $dir, $filereq)
+function store_sertifikat($data, $dir, $filereq)
 {
     // dd($data, $dir, $filereq);
     $path = 'public/' . $dir . '/';
     $pathDb = 'storage/' . $dir . '/';
     $originalName = $filereq->getClientOriginalName();
-    // FIL: no_sppd(special karakter ganti '-') + - + nama_dokumen(special karakter ganti '-', spasi diganti '') + - + urutan
 
     $nama_pengembang = str_replace(array(
         '/', '"', "'",
         '.', ';', '<', '>', ' '
     ), '-', $data->name);
-    // dd($nama_pengembang, $nama_dokumen);
-    $name = $nama_pengembang . '.' . $filereq->getClientOriginalExtension();
+    $name = 'Sertifikat-' . $nama_pengembang . '.' . $filereq->getClientOriginalExtension();
 
     // save image
     $result = Storage::disk('local')->put($path . $name, file_get_contents($filereq));
 
-    // dd($result);
     if ($result) {
         $requestFile = [
             'pengembang_id' => $data->id,
@@ -30,7 +27,39 @@ function store_file($data, $dir, $filereq)
             'mime' => $filereq->getMimeType(),
             'created_at' => now()
         ];
-        $resultFile = $data->file()->insert($requestFile);
+        $resultFile = $data->dataPengembang->file()->insert($requestFile);
+    }
+
+    return $resultFile;
+}
+
+
+function store_perumahan_image($data, $dir, $filereq)
+{
+    // dd($data, $dir, $filereq);
+    $path = 'public/' . $dir . '/';
+    $pathDb = 'storage/' . $dir . '/';
+    $originalName = $filereq->getClientOriginalName();
+
+    $nama_perumahan = str_replace(array(
+        '/', '"', "'",
+        '.', ';', '<', '>', ' '
+    ), '-', $data->nama);
+    $name = 'Proyek-Perumahan-' . $nama_perumahan . '.' . $filereq->getClientOriginalExtension();
+
+    // save image
+    $result = Storage::disk('local')->put($path . $name, file_get_contents($filereq));
+
+    if ($result) {
+        $requestFile = [
+            'perumahan_id' => $data->id,
+            'name' => $name,
+            'original_name' => $originalName,
+            'path' => $pathDb,
+            'mime' => $filereq->getMimeType(),
+            'created_at' => now()
+        ];
+        $resultFile = $data->dataPengembang->file()->insert($requestFile);
     }
 
     return $resultFile;
