@@ -25,8 +25,9 @@ Route::group([
     'as' => 'page.perumahan.',
 ], function () {
     Route::get('list', [PerumahanController::class, 'list_perumahan'])->name('list');
-    Route::get('proyek', [PerumahanController::class, 'proyek_perumahan'])->name('proyek');
+    Route::get('proyek', [PerumahanController::class, 'proyek_perumahan'])->name('proyek')->middleware('pengembang');
     Route::get('detail/{id}', [PerumahanController::class, 'detail_perumahan'])->name('detail');
+    Route::get('detail_kriteria/{id}', [PerumahanController::class, 'detail_perumahan_kriteria'])->name('detail_kriteria');
 });
 
 Route::group([

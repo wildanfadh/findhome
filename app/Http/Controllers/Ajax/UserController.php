@@ -25,9 +25,9 @@ class UserController extends Controller
                 // ========== Action ==========
                 if ($data->roles[0]->name != 'Admin') {
                     if ($data->is_active == 1) {
-                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Active</button>";
+                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Aktif</button>";
                     } else {
-                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>InActive</button>";
+                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>Tidak Aktif</button>";
                     }
                 }
 
@@ -53,9 +53,9 @@ class UserController extends Controller
                 // ========== Action ==========
                 if ($data->roles[0]->name != 'Admin') {
                     if ($data->is_active == 1) {
-                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Active</button>";
+                        $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Aktif</button>";
                     } else {
-                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>InActive</button>";
+                        $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>Tidak Aktif</button>";
                     }
                 }
 

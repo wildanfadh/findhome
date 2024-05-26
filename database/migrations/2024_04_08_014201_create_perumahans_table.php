@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('perumahan', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned()->nullable(false)->comment('ID Pengembang');
+            $table->integer('pengembang_id')->unsigned()->nullable(false)->comment('ID Pengembang');
             $table->string('nama', 100)->comment('Nama Perumahan');
             $table->text('alamat');
-            $table->longText('keterangan');
+            $table->longText('keterangan')->nullable();
             $table->boolean('is_verified');
             $table->timestamps();
         });

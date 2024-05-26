@@ -27,6 +27,13 @@
         @endforeach
     @endisset
 
+    <style>
+        .required-symbol {
+            color: red;
+            font-size: 1rem;
+        }
+    </style>
+
     @stack('styles')
 </head>
 

@@ -59,8 +59,22 @@ function store_perumahan_image($data, $dir, $filereq)
             'mime' => $filereq->getMimeType(),
             'created_at' => now()
         ];
-        $resultFile = $data->dataPengembang->file()->insert($requestFile);
+        $resultFile = $data->image()->insert($requestFile);
     }
 
     return $resultFile;
+}
+
+function delete_perumahan_image($data, $dir)
+{
+    // dd($data, $dir);
+    $path = 'public/' . $dir . '/';
+    $file = $path . $data->name;
+    //  delete file
+    Storage::delete($file);
+
+    // delete record
+    $result = $data->delete();
+
+    return $result;
 }

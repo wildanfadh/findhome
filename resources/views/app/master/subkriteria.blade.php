@@ -30,6 +30,7 @@
                             <tr class="text-start">
                                 <th>NO</th>
                                 <th>Uraian</th>
+                                <th>Keterangan</th>
                                 <th>Nilai</th>
                                 <th>Aksi</th>
                             </tr>
@@ -137,6 +138,9 @@
                 }, {
                     data: 'uraian',
                     name: 'uraian'
+                }, {
+                    data: 'keterangan',
+                    name: 'keterangan'
                 }, {
                     data: 'nilai',
                     name: 'nilai'

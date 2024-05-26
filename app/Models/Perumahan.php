@@ -22,7 +22,7 @@ class Perumahan extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'pengembang_id',
         'nama',
         'alamat',
         'keterangan',
