@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pengembang', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned()->nullable(false)->comment('ID Pengguna');
-            // $table->string('sertifikat_sp2', 100);
+            $table->string('nama_perusahaan')->default('Tidak Ada Informasi');
             $table->text('alamat');
             $table->boolean('is_verified');
             $table->timestamps();

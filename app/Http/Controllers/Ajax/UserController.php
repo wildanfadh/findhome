@@ -52,7 +52,7 @@ class UserController extends Controller
                 $activeBtn = '';
                 // ========== Action ==========
                 if ($data->roles[0]->name != 'Admin') {
-                    if ($data->is_active == 1) {
+                    if ($data->dataPengembang->is_verified == 1) {
                         $activeBtn = "<button class='btn btn-sm btn-success btn-active' data-single_source='{$data}'>Aktif</button>";
                     } else {
                         $activeBtn = "<button class='btn btn-sm btn-danger btn-inactive' data-single_source='{$data}'>Tidak Aktif</button>";
@@ -115,6 +115,7 @@ class UserController extends Controller
             ];
 
             $data_pengembang_request = [
+                "nama_perusahaan" => $request->nama_perusahaan,
                 "alamat" => $request->alamat,
                 "is_verified" => false,
             ];

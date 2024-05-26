@@ -46,12 +46,13 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => ['auth', 'role:Pengembang'],
+    'middleware' => ['auth'],
     'prefix' => 'ajax.proyekperumahan',
     'as' => 'ajax.proyekperumahan.',
 ], function () {
     Route::get('/', [PerumahanController::class, 'index'])->name('index');
-    Route::post('store', [PerumahanController::class, 'store'])->name('store');
-    Route::put('update/{id}', [PerumahanController::class, 'update'])->name('update');
+    Route::post('store', [PerumahanController::class, 'store'])->name('store')->middleware('pengembang');
+    Route::put('update/{id}', [PerumahanController::class, 'update'])->name('update')->middleware('pengembang');
+    Route::post('request_kriteria_perumahan', [PerumahanController::class, 'request_kriteria_perumahan'])->name('request_kriteria_perumahan');
     Route::delete('delete/{id}', [PerumahanController::class, 'destroy'])->name('delete');
 });

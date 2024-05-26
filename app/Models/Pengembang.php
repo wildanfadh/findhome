@@ -23,18 +23,23 @@ class Pengembang extends Model
      */
     protected $fillable = [
         'user_id',
-        // 'sertifikat_sp2',
+        'nama_perusahaan',
         'alamat',
         'is_verified',
     ];
 
     public function akun()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function file()
     {
         return $this->hasOne(PengembangSertifikat::class, 'pengembang_id', 'id');
+    }
+
+    public function perumahans()
+    {
+        return $this->hasMany(Perumahan::class, 'pengembang_id', 'id');
     }
 }

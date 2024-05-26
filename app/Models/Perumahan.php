@@ -29,8 +29,18 @@ class Perumahan extends Model
         'is_verified',
     ];
 
+    public function pengembang()
+    {
+        return $this->belongsTo(Pengembang::class, 'pengembang_id', 'id');
+    }
+
     public function image()
     {
         return $this->hasOne(PerumahanImage::class, 'perumahan_id', 'id');
+    }
+
+    public function kriteriaPerumahan()
+    {
+        return $this->hasMany(KriteriaPerumahan::class, 'perumahan_id', 'id');
     }
 }

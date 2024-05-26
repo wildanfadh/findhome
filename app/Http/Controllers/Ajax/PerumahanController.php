@@ -6,6 +6,7 @@ use App\Models\Perumahan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\KriteriaPerumahan;
 use Yajra\DataTables\Facades\DataTables;
 
 class PerumahanController extends Controller
@@ -19,7 +20,7 @@ class PerumahanController extends Controller
             ->addColumn('status', function ($data) {
                 $activeBtn = '';
                 // ========== Action ==========
-                if ($data->is_active == 1) {
+                if ($data->is_verified == 1) {
                     $activeBtn = "<span class='badge badge-sm text-bg-success' data-single_source='{$data}'>Aktif</span>";
                 } else {
                     $activeBtn = "<span class='badge badge-sm text-bg-muted' data-single_source='{$data}'>Proses Verifikasi</span>";
@@ -52,7 +53,7 @@ class PerumahanController extends Controller
         DB::beginTransaction();
         try {
             $data_request = [
-                'pengembang_id' => auth()->user()->id,
+                'pengembang_id' => auth()->user()->dataPengembang->id,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'keterangan' => $request->keterangan,
@@ -90,7 +91,7 @@ class PerumahanController extends Controller
             $data = Perumahan::find($id);
             // dd($data);
             $data_request = [
-                'pengembang_id' => auth()->user()->id,
+                'pengembang_id' => auth()->user()->dataPengembang->id,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'keterangan' => $request->keterangan,
@@ -120,6 +121,38 @@ class PerumahanController extends Controller
                 'success' => true,
                 'message' => 'Data Berhasil ditambahkan',
                 'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function request_kriteria_perumahan(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = KriteriaPerumahan::where(['perumahan_id' => $request->perumahan_id, 'kriteria_id' => $request->kriteria_id])->first();
+            $data_request = [
+                'perumahan_id' => $request->perumahan_id,
+                'kriteria_id' => $request->kriteria_id,
+                'sub_kriteria_id' => $request->sub_kriteria_id,
+            ];
+
+            if ($data) {
+                $data->update($data_request);
+            } else {
+                $data = KriteriaPerumahan::create($data_request);
+            }
+
+            DB::commit();
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil ditambahkan',
+                'data' => $data_request
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

@@ -30,9 +30,30 @@ class PerumahanController extends Controller
 
     public function detail_perumahan($id)
     {
+        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI', 'SELECT2']);
         $perumahan = Perumahan::find($id);
         $kriteria = Kriteria::all();
+        // dd($kriteria, $perumahan->kriteriaPerumahan->count());
+
+        $data_kriteria = [];
+        // if ($perumahan->kriteriaPerumahan->count() > 0) {
+        foreach ($kriteria as $k) {
+            $data_kriteria[] = [
+                'id' => $k->id,
+                'nama' => $k->nama,
+                'sifat' => $k->sifat,
+                'bobot' => $k->bobot,
+                'sub_kriteria_id' => $perumahan->kriteriaPerumahan()->where('kriteria_id', $k->id)->first()->sub_kriteria_id,
+            ];
+        }
+        // } else {
+        //     $data_kriteria = $kriteria;
+        // }
+        // dd($data_kriteria, collect($data_kriteria));
         $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
             'data' => $perumahan,
             'kriteria' => $kriteria,
         ];

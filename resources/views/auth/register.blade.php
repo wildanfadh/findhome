@@ -188,7 +188,9 @@
                             toast: true,
                             title: "Berhasil!",
                             text: data.message,
-                            icon: "success"
+                            icon: "success",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {

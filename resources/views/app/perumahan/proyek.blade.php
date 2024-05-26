@@ -111,8 +111,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="https://placehold.co/600x400" alt="image_perumahan" id="imagePerumahanViewEdit"
-                        style="width: 100%">
+                    <img src="https://placehold.co/600x400" alt="image_perumahan" class="object-fit-contain border rounded"
+                        id="imagePerumahanViewEdit" style="width: 100%; max-height: 300px;">
                     <form id="formEditPerumahan" class="mt-5" enctype="multipart/form-data">
                         @csrf
                         {{-- @method('PUT') --}}

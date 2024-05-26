@@ -44,5 +44,20 @@ class UserSeeder extends Seeder
 
         $userUmum->assignRole([$roleUmum->id]);
         // ========== End Umum ==========
+
+        // ========== Pengembang ==========
+        $userUmum = User::create([
+            'name' => 'Pengembang 1 (Test)',
+            'username' => 'pengembang1',
+            'no_hp' => '00000000000',
+            'email' => 'pengembang1@mail.com',
+            'password' => Hash::make('password'),
+            'created_at' => now()
+        ]);
+
+        $roleUmum = Role::where('name', 'Pengembang')->first();
+
+        $userUmum->assignRole([$roleUmum->id]);
+        // ========== End Pengembang ==========
     }
 }

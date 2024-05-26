@@ -9,7 +9,7 @@ use App\Http\Controllers\Pages\UserController;
 use App\Http\Controllers\Pages\VerifikasiController;
 
 Route::group([
-    'middleware' => ['auth'],
+    // 'middleware' => ['auth'],
     'prefix' => 'page.user',
     'as' => 'page.user.',
 ], function () {

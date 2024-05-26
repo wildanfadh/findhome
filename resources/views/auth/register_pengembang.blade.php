@@ -16,7 +16,7 @@
         <div
             class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
             <div class="d-flex align-items-center justify-content-center w-100">
-                <div class="row justify-content-center w-100">
+                <div class="row justify-content-center w-100 my-5">
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
@@ -44,6 +44,11 @@
                                     <div class="mb-4">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" name="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nama_perusahaan" class="form-label">Nama Perusahaan</label>
+                                        <input type="text" name="nama_perusahaan" class="form-control"
+                                            id="nama_perusahaan" aria-describedby="namaPerusahaanHelp" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="sertifikat_sp2" class="form-label">Sertifikat SP2</label>
@@ -144,6 +149,7 @@
                 var username = $("input[name='username']").val();
                 var no_hp = $("input[name='no_hp']").val();
                 var email = $("input[name='email']").val();
+                var nama_perusahaan = $("input[name='nama_perusahaan']").val();
                 var sertifikat = $("input[name='sertifikat_sp2']")[0].files[0];
                 console.log('sertifikat:', sertifikat);
                 var alamat = $("textarea[name='alamat']").val();
@@ -165,6 +171,7 @@
                 formData.append('username', username);
                 formData.append('no_hp', no_hp);
                 formData.append('email', email);
+                formData.append('nama_perusahaan', nama_perusahaan);
                 formData.append('sertifikat', sertifikat);
                 formData.append('alamat', alamat);
                 formData.append('password', password);
@@ -214,7 +221,9 @@
                             toast: true,
                             title: "Berhasil!",
                             text: data.message,
-                            icon: "success"
+                            icon: "success",
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
