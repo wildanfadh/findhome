@@ -21,7 +21,7 @@
             <span class="hero-text"></span>
             <span class="msg">Anda meniggalkan Halaman ini terlalu lama.</span>
             <span class="support">
-                <a type="button" onclick="{{ route('beranda') }}">Refresh</a>
+                <a type="button" href="{{ route('beranda') }}">Refresh</a>
             </span>
         </div>
         <div class="lock"></div>

@@ -3,8 +3,13 @@
 @section('content')
     <div class="card">
         {{-- <img src="{{ asset('assets/images/products/s4.jpg') }}" height="300" class="card-img-top" alt="..."> --}}
-        <img src="{{ asset($data->image->path . $data->image->name) }}" class="object-fit-contain border rounded"
-            style="max-height: 500px" alt="...">
+        @if ($data->image != null)
+            <img src="{{ asset($data->image->path . $data->image->name) }}" class="object-fit-contain border rounded"
+                style="max-height: 500px" alt="...">
+        @else
+            <img src="https://placehold.co/600x400" class="object-fit-contain border rounded" style="max-height: 500px"
+                alt="...">
+        @endif
         <div class="card-body">
             <h5 class="card-title">{{ $data->nama }}</h5>
             <p class="card-text">{{ $data->alamat }}</p>
@@ -17,8 +22,10 @@
                 Kembali</button>
             {{-- <a href="{{ route('page.verifikasi.index') }}" class="btn btn-primary"><i class="ti ti-arrow-back-up"></i>
                 Kembali</a> --}}
-            <button class="btn btn-success float-end verif-perumahan"><i class="ti ti-check"></i>
-                Verif Perumahan</button>
+            @hasanyrole('Admin')
+                <button class="btn btn-success float-end verif-perumahan"><i class="ti ti-check"></i>
+                    Verif Perumahan</button>
+            @endhasanyrole
         </div>
     </div>
 
@@ -57,6 +64,7 @@
                                                 id="sub_kriteria_select2_{{ $key }}" style="width: 100%">
                                                 @foreach ($item->subKriterias as $sub)
                                                     <option value=""></option>
+                                                    {{-- <option value="0" selected>Pilih ini</option> --}}
                                                     <option value="{{ $sub->id }}">
                                                         {{ $sub->uraian }}
                                                     </option>
@@ -84,14 +92,26 @@
     <script>
         $(document).ready(function() {
             let data_kriteria = {!! json_encode($kriteria) !!};
+            let data_kriteria_perumahan = {!! json_encode($kriteriaPerumahan) !!};
             $.each(data_kriteria, function(indexInArray, valueOfElement) {
-                console.log(valueOfElement);
+                // console.log(valueOfElement);
+                // console.log('sub_kriteria_select2_' + indexInArray);
                 $('#sub_kriteria_select2_' + indexInArray).select2({
                     theme: "bootstrap",
                     allowClear: true,
                     placeholder: 'Pilih ' + valueOfElement.nama
                 });
-                $('#sub_kriteria_select2_' + indexInArray).val(valueOfElement.sub_kriteria_id).trigger(
+                let sub_kriteria_selected = 0;
+                $.each(valueOfElement.sub_kriterias, function(indexSub, valSub) {
+                    // console.log(valSub, data_kriteria_perumahan);
+                    $.each(data_kriteria_perumahan, function(indexKP, valKriPer) {
+                        if (valKriPer.sub_kriteria_id == valSub.id) {
+                            sub_kriteria_selected = valSub.id;
+                        }
+                    });
+                });
+                console.log(sub_kriteria_selected);
+                $('#sub_kriteria_select2_' + indexInArray).val(sub_kriteria_selected).trigger(
                     'change');
             });
 
@@ -173,6 +193,12 @@
                 });
             });
             {{-- ----------------------- Save Kriteria Perumahan ---------------------- --}}
+
+            {{-- --------------------------- Verif Perumahan -------------------------- --}}
+            $('.verif-perumahan').on('click', function() {
+                console.log('verif perumahan');
+            })
+            {{-- --------------------------- Verif Perumahan -------------------------- --}}
         });
     </script>
 @endpush

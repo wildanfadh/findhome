@@ -9,17 +9,43 @@
     </div>
 
     <div class="row">
-        <div class="col-3">
-            <div class="card">
-                <img src="../assets/images/products/s4.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                        the
-                        card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+        @foreach ($perumahan as $item)
+            <div class="col-3">
+                <div class="card">
+                    @if ($item->image != null)
+                        <img src="{{ asset($item->image->path . $item->image->name) }}"
+                            class="object-fit-contain border rounded" style="max-height: 250px" alt="...">
+                    @else
+                        <img src="https://placehold.co/600x400" class="object-fit-contain border rounded"
+                            style="max-height: 250px" alt="...">
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $item->nama }}</h5>
+                        <h6 class="card-text">{{ $item->pengembang->nama_perusahaan }}.</h6>
+                        <p class="card-text">{{ $item->alamat }}.</p>
+                        <a href="{{ route('page.perumahan.detail', $item->id) }}" class="btn btn-primary">Detail</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+
+            {{-- --------------------------- reload on back --------------------------- --}}
+            window.addEventListener("pageshow", function(event) {
+                var historyTraversal = event.persisted ||
+                    (typeof window.performance != "undefined" &&
+                        window.performance.navigation.type === 2);
+                if (historyTraversal) {
+                    // Handle page restore.
+                    window.location.reload();
+                }
+            });
+            {{-- --------------------------- reload on back --------------------------- --}}
+        });
+    </script>
+@endpush

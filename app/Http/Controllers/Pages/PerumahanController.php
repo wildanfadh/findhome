@@ -12,7 +12,15 @@ class PerumahanController extends Controller
 {
     public function list_perumahan()
     {
-        $data = [];
+        $hs = head_source([]);
+        $js = script_source(['BLOCKUI']);
+        $perumahan = Perumahan::all();
+
+        $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
+            'perumahan' => $perumahan,
+        ];
         return view('app.perumahan.list', $data);
     }
 
@@ -34,28 +42,13 @@ class PerumahanController extends Controller
         $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI', 'SELECT2']);
         $perumahan = Perumahan::find($id);
         $kriteria = Kriteria::all();
-        // dd($kriteria, $perumahan->kriteriaPerumahan->count());
 
-        $data_kriteria = [];
-        // if ($perumahan->kriteriaPerumahan->count() > 0) {
-        foreach ($kriteria as $k) {
-            $data_kriteria[] = [
-                'id' => $k->id,
-                'nama' => $k->nama,
-                'sifat' => $k->sifat,
-                'bobot' => $k->bobot,
-                'sub_kriteria_id' => $perumahan->kriteriaPerumahan()->where('kriteria_id', $k->id)->first()->sub_kriteria_id,
-            ];
-        }
-        // } else {
-        //     $data_kriteria = $kriteria;
-        // }
-        // dd($data_kriteria, collect($data_kriteria));
         $data = [
             "HeadSource" => $hs,
             "JsSource" => $js,
             'data' => $perumahan,
             'kriteria' => $kriteria,
+            'kriteriaPerumahan' => $perumahan->kriteriaPerumahan
         ];
         return view('app.perumahan.detail', $data);
     }
