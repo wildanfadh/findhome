@@ -78,3 +78,13 @@ function delete_perumahan_image($data, $dir)
 
     return $result;
 }
+
+function generate_key_matrix($string)
+{
+    $result = str_replace(array(
+        '/', '"', "'",
+        '.', ';', '<', '>', ' '
+    ), '-', $string);
+
+    return strtolower($result);
+}

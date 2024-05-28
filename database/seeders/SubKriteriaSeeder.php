@@ -35,7 +35,7 @@ class SubKriteriaSeeder extends Seeder
             ],
             [
                 'kriteria_id' => 1,
-                'uraian' => 'Hrg > 150.5 juta s/d 160 juta',
+                'uraian' => 'Hrg > 180 juta s/d 190 juta',
                 'nilai' => 6,
                 'created_at' => now(),
             ],

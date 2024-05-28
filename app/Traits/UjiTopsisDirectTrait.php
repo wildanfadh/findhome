@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\Kriteria;
+use App\Models\Perumahan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -9,11 +11,11 @@ trait UjiTopsisDirectTrait
 {
     // bobot menyesuaikan request berdasarkan preference jika tidak akan default ambil dari bobot dasar database
     // tetap menyesuaikan dengan database
-    private function __construct()
-    {
-        $this->bobot = $bobot = [];
-        $this->sifat = $sifat = [];
-    }
+    // private function __construct()
+    // {
+    //     $this->bobot = $bobot = [];
+    //     $this->sifat = $sifat = [];
+    // }
 
     /**
      * General Topsis
@@ -22,8 +24,24 @@ trait UjiTopsisDirectTrait
      *
      * @param   array     @matrik
      */
-    public function general($matrik)
+    public function uji_topsis_general()
     {
+        // dd($matrik);
+        // get all data
+        $matrix = [];
+        $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->get();
+        $kriterias = Kriteria::with(['subKriterias'])->get();
+        // dd($perumahans, $kriterias);
+        foreach ($perumahans as $key => $perum) {
+            $kriteriasPerPerum = [];
+            foreach ($perum->kriteriaPerumahan as $keykri => $kri) {
+                // dd($kri->subkriteria);
+                $kriteriasPerPerum['K' . $keykri + 1] = $kri->subkriteria->nilai;
+            }
+            // dd($kriteriasPerPerum);
+            $matrix['A' . $key + 1] = $kriteriasPerPerum;
+        }
+        dd($matrix);
 
         // Mengkuadratkan Matrik
 

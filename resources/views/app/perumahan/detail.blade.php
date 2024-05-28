@@ -72,8 +72,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-info btn-simpan-subkriteria"
-                                                id="save_kriteria_perumahan" data-kriteria="{{ $item }}"
+                                            <button type="button" class="btn btn-warning btn-simpan-subkriteria"
+                                                id="save_kriteria_perumahan" data-kriteriaId="{{ $item->id }}"
+                                                data-kriteria="{{ $item }}"
                                                 data-idsubkriteria="sub_kriteria_select2_{{ $key }}"> <i
                                                     class="ti ti-device-floppy"></i></button>
                                         </td>
@@ -113,6 +114,10 @@
                 console.log(sub_kriteria_selected);
                 $('#sub_kriteria_select2_' + indexInArray).val(sub_kriteria_selected).trigger(
                     'change');
+                if (sub_kriteria_selected != 0) {
+                    $('button[data-kriteriaId="' + valueOfElement.id + '"]').removeClass('btn-warning')
+                        .addClass('btn-info');
+                }
             });
 
             {{-- ----------------------- Save Kriteria Perumahan ---------------------- --}}
@@ -189,6 +194,9 @@
                     // Hide spinner or loader
                     if (textStatus == 'success') {
                         $('#kriteriaTable').unblock();
+                        $('button[data-kriteriaId="' + kriteria.id + '"]').removeClass(
+                                'btn-warning')
+                            .addClass('btn-info');
                     }
                 });
             });

@@ -26,4 +26,14 @@ class KriteriaPerumahan extends Model
         'kriteria_id',
         'sub_kriteria_id'
     ];
+
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class, 'kriteria_id', 'id');
+    }
+
+    public function subkriteria()
+    {
+        return $this->belongsTo(SubKriteria::class, 'sub_kriteria_id', 'id');
+    }
 }

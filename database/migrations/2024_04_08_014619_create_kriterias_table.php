@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('kriteria', function (Blueprint $table) {
             $table->id();
+            $table->string('kode');
             $table->string('nama');
             $table->integer('sifat')->default(1); // 1 = cost, 2 = benefit
             $table->float('bobot', 5, 3)->nullable()->comment('Bobot kriteria dalam persen');

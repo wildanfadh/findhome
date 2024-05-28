@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('perumahan', function (Blueprint $table) {
             $table->id();
+            $table->string('kode');
             $table->integer('pengembang_id')->unsigned()->nullable(false)->comment('ID Pengembang');
             $table->string('nama', 100)->comment('Nama Perumahan');
             $table->text('alamat');

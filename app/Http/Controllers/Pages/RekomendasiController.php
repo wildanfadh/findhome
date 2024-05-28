@@ -16,7 +16,14 @@ class RekomendasiController extends Controller
 
     public function rekomendasi()
     {
-        $data = [];
+        $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
+        $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
+        $hasilUji = $this->uji_topsis_general();
+        dd($hasilUji);
+        $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
+        ];
         return view('app.uji.rekomendasi', $data);
     }
 
