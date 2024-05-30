@@ -15,6 +15,7 @@ class PerumahanSeeder extends Seeder
     {
         $data = [
             [
+                'kode' => 'A1',
                 'pengembang_id' => 1,
                 'nama' => 'Graha Bhineka Central',
                 'alamat' => 'Sidonganti, Ngingasrembyong, Kec. Sooko, Kabupaten Mojokerto, Jawa Timur 61361',
@@ -23,6 +24,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A2',
                 'pengembang_id' => 2,
                 'nama' => 'Grand Kencana Mojokerto',
                 'alamat' => 'Jalan Kemakmuran, Desa Kedung Maling, Kec. Sooko',
@@ -31,6 +33,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A3',
                 'pengembang_id' => 3,
                 'nama' => 'Griya Puri Asri',
                 'alamat' => 'Jl. Raya Puri, Griya Puri Asri, Puri, Kec. Puri',
@@ -39,6 +42,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A4',
                 'pengembang_id' => 4,
                 'nama' => 'Griya Madureso Asri',
                 'alamat' => 'JL, Sawah, Madureso, Kec. Dawar Blandong',
@@ -47,6 +51,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A5',
                 'pengembang_id' => 5,
                 'nama' => 'Griya Modopuro Perkasa',
                 'alamat' => 'Bangsri, Modopuro, Kec. Mojosari',
@@ -55,6 +60,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A6',
                 'pengembang_id' => 6,
                 'nama' => 'Bumi Mojopahit Asri',
                 'alamat' => 'Ds. Ngastemi Bangsal',
@@ -63,6 +69,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A7',
                 'pengembang_id' => 7,
                 'nama' => 'Garden Icon',
                 'alamat' => 'Jl Raya Kebonagung, Kali Putih, Kebonagung, Kec. Puri',
@@ -71,6 +78,7 @@ class PerumahanSeeder extends Seeder
                 'created_at' => now(),
             ],
             [
+                'kode' => 'A8',
                 'pengembang_id' => 8,
                 'nama' => 'Permata Pesanggrahan',
                 'alamat' => 'Pesanggrahan, Kutorejo',

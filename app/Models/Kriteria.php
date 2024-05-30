@@ -22,6 +22,7 @@ class Kriteria extends Model
      * @var array
      */
     protected $fillable = [
+        'kode',
         'nama',
         'sifat',
         'bobot',

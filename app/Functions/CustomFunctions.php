@@ -33,7 +33,6 @@ function store_sertifikat($data, $dir, $filereq)
     return $resultFile;
 }
 
-
 function store_perumahan_image($data, $dir, $filereq)
 {
     // dd($data, $dir, $filereq);

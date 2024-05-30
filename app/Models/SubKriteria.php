@@ -25,5 +25,6 @@ class SubKriteria extends Model
         'kriteria_id',
         'uraian',
         'nilai',
+        'keterangan',
     ];
 }

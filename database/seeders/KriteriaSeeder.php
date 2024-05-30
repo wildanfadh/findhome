@@ -16,24 +16,28 @@ class KriteriaSeeder extends Seeder
     {
         $data = [
             [
+                'kode' => 'K1',
                 'nama' => 'Harga',
                 'sifat' => SifatKriteria::COST,
                 'bobot' => 0.19,
                 'created_at' => now(),
             ],
             [
+                'kode' => 'K2',
                 'nama' => 'Tipe',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.20,
                 'created_at' => now(),
             ],
             [
+                'kode' => 'K3',
                 'nama' => 'Fasilitas Umum',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.28,
                 'created_at' => now(),
             ],
             [
+                'kode' => 'K4',
                 'nama' => 'Lokasi',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.33,
