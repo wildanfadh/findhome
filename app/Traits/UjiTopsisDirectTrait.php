@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Enums\SifatKriteria;
 use App\Models\Kriteria;
 use App\Models\Perumahan;
 use Illuminate\Http\JsonResponse;
@@ -96,24 +97,97 @@ trait UjiTopsisDirectTrait
         // Matrik Solusi Ideal
         $matrik_solusi_ideal = [];
         foreach ($normalisasis_terbobot as $msikey => $normal) {
-            $msival = [];
+            $min = min($normal);
+            $max = max($normal);
+            $positif = [];
+            $negatif = [];
             foreach ($normal as $msivalkey => $msivalval) {
-                $msival[$msivalkey] = $msivalval;
+                $kri = Kriteria::where('kode', $msivalkey)->first();
+                if ($kri->sifat == SifatKriteria::BENEFIT) {
+                    $positif[$msivalkey] = $max;
+                    $negatif[$msivalkey] = $min;
+                } else {
+                    $positif[$msivalkey] = $min;
+                    $negatif[$msivalkey] = $max;
+                }
             }
-            $matrik_solusi_ideal[$msikey] = $msival;
+            $matrik_solusi_ideal['positif'] = $positif;
+            $matrik_solusi_ideal['negatif'] = $negatif;
         }
-        dd($matrik_solusi_ideal);
+        // dd($matrik_solusi_ideal);
+
+        /* ---------------------------------- TOTAL --------------------------------- */
 
         // Aplus
+        $aplus = [];
+        foreach ($normalisasis_terbobot as $tkey => $normal) {
+            $plus = [];
+            foreach ($normal as $tvalkey => $tvalval) {
+                foreach ($matrik_solusi_ideal as $msikey => $msival) {
+                    // $aplus[$tvalkey] = $tvalval;
+                    if ($msikey == 'positif') {
+                        $plus[$tvalkey] = ($tvalval - $msival[$tvalkey]) * ($tvalval - $msival[$tvalkey]);
+                    }
+                }
+            }
+            $aplus[$tkey] = $plus;
+        }
+        // dd($aplus);
 
         // Amin
+        $amin = [];
+        foreach ($normalisasis_terbobot as $tkey => $normal) {
+            $min = [];
+            foreach ($normal as $tvalkey => $tvalval) {
+                foreach ($matrik_solusi_ideal as $msikey => $msival) {
+                    if ($msikey == 'negatif') {
+                        $min[$tvalkey] = ($tvalval - $msival[$tvalkey]) * ($tvalval - $msival[$tvalkey]);
+                    }
+                }
+            }
+            $amin[$tkey] = $min;
+        }
+        // dd($amin);
 
         // Jarak Matrik Solusi Ideal
+        $jarak_solusi_ideal = [];
+        foreach ($normalisasis_terbobot as $tkey => $normal) {
+            $jarakplus = [];
+            foreach ($aplus as $apkey => $apval) {
+                if ($tkey == $apkey) {
+                    $jarakplus = sqrt(array_sum($apval));
+                }
+            }
+            $jarakmin = [];
+            foreach ($amin as $amkey => $amval) {
+                if ($tkey == $amkey) {
+                    $jarakmin = sqrt(array_sum($amval));
+                }
+            }
+            $jarak_solusi_ideal[$tkey] = ['positif' => $jarakplus, 'negatif' => $jarakmin];
+        }
+        // dd($jarak_solusi_ideal);
 
         // Nilai Preferensi pada setiap ALternatif
+        $preferensi = [];
+        foreach ($jarak_solusi_ideal as $tkey => $jarak) {
+            $preferensi[$tkey] = $jarak['negatif'] / ($jarak['positif'] + $jarak['negatif']);
+        }
+        // dd($preferensi);
 
         // Perangkingan
+        arsort($preferensi);
+        $rank = $preferensi;
 
+        // Return data Perumahan Rank
+        $data = [];
+        foreach ($rank as $key => $value) {
+            $data[$key] = [
+                'nilai' => $value,
+                'data' => Perumahan::where('kode', $key)->first(),
+            ];
+        }
+        return $data;
     }
 
     /**

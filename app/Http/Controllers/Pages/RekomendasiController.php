@@ -19,10 +19,11 @@ class RekomendasiController extends Controller
         $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
         $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
         $hasilUji = $this->uji_topsis_general();
-        dd($hasilUji);
+        // dd($hasilUji);
         $data = [
             "HeadSource" => $hs,
             "JsSource" => $js,
+            "hasilUji" => $hasilUji
         ];
         return view('app.uji.rekomendasi', $data);
     }

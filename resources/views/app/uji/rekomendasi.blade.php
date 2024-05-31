@@ -7,8 +7,13 @@
             <p class="mb-0">Hasil Rekomendasi Secara Umum</p>
         </div>
         <div class="card-body">
-
-            <div class="alert alert-success" role="alert">
+            @foreach ($hasilUji as $key => $item)
+                <div class="alert alert-secondary" role="alert">
+                    {{ $item['data']->nama }} <a href="{{ route('page.perumahan.detail', $item['data']->id) }}"
+                        class="btn btn-sm btn-primary float-end">Detail</a>
+                </div>
+            @endforeach
+            {{-- <div class="alert alert-success" role="alert">
                 A simple success alert—check it out!
             </div>
             <div class="alert alert-success" role="alert">
@@ -52,7 +57,7 @@
             </div>
             <div class="alert alert-secondary" role="alert">
                 A simple secondary alert—check it out!
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
