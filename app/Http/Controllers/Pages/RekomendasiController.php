@@ -19,15 +19,17 @@ class RekomendasiController extends Controller
     {
         $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
         $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
-        $hasilUjiUmum = $this->uji_topsis_general();
-        $hasilUjiPreference = $this->uji_topsis_preference();
 
-        $loginRole = auth()->user()->roles[0]->name;
+        // $loginRole = auth()->user()->roles[0]->name;
         $hasilUji = [];
-        if ($loginRole == 'Umum') {
-            $hasilUji = $hasilUjiPreference;
+        if (auth()->user()->roles[0]->name == 'Umum' && isset(auth()->user()->preferencys)) {
+            $data_bobot_pref = [];
+            foreach (auth()->user()->preferencys as $key => $value) {
+                $data_bobot_pref[$value->kriteria_kode] = $value;
+            }
+            $hasilUji = $this->uji_topsis_preference($data_bobot_pref);
         } else {
-            $hasilUji = $hasilUjiUmum;
+            $hasilUji = $this->uji_topsis_general();
         }
 
         $kriterias = Kriteria::all();
@@ -48,11 +50,11 @@ class RekomendasiController extends Controller
     {
         $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
         $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
-        $hasilUji = $this->uji_topsis_preference();
+        // $hasilUji = $this->uji_topsis_preference();
         $data = [
             "HeadSource" => $hs,
             "JsSource" => $js,
-            "hasilUji" => $hasilUji
+            // "hasilUji" => $hasilUji
         ];
         return view('app.uji.rekomendasi_preferensi', $data);
     }

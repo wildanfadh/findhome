@@ -6,7 +6,11 @@
             <div class="row">
                 <div class="col-6">
                     <h5 class="card-title fw-semibold mb-4">Hasil Uji Rekomendasi</h5>
-                    <p class="mb-0">Hasil Rekomendasi Secara Umum</p>
+                    @if (auth()->user()->roles[0]->name == 'Umum' && isset(auth()->user()->preferencys))
+                        <p class="mb-0">Hasil Rekomendasi sesuai Preferensi Anda</p>
+                    @else
+                        <p class="mb-0">Hasil Rekomendasi Secara Umum</p>
+                    @endif
                 </div>
                 <div class="col-6">
                     @hasanyrole('Umum')
@@ -93,7 +97,7 @@
                                 <input type="hidden" name="input_nilai_{{ $item['kode'] }}" id="input_nilai">
                                 @foreach ($item['pilihans'] as $pkey => $pil)
                                     <div class="form-check my-3">
-                                        <input class="form-check-input" type="radio" {{-- name="pertanyaan_{{ $key }}" --}}
+                                        <input class="form-check-input" type="radio" name="pertanyaan_{{ $key }}"
                                             id="pertanyaan_{{ $key . '_' . $pkey }}" data-nilai="{{ $pkey }}"
                                             data-inputname="input_nilai_{{ $item['kode'] }}" @required(true)>
                                         <label class="form-check-label" for="pertanyaan_{{ $key . '_' . $pkey }}">
@@ -207,6 +211,8 @@
                     if (textStatus == 'success') {
                         $('#form_kuesioner').unblock();
                         $('#kuesionerModal').modal('hide');
+                        // reload page
+                        location.reload();
                     }
                 });
             })

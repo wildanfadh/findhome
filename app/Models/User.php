@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pengembang::class, 'user_id', 'id');
     }
+
+    public function preferencys()
+    {
+        return $this->hasMany(Preferensi::class, 'user_id', 'id');
+    }
 }

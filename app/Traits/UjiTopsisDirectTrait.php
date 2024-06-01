@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Enums\SifatKriteria;
 use App\Models\Kriteria;
 use App\Models\Perumahan;
+use App\Models\Preferensi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -197,8 +198,9 @@ trait UjiTopsisDirectTrait
      *
      * @param   array     @matrik
      */
-    public function uji_topsis_preference()
+    public function uji_topsis_preference($data_bobot_pref)
     {
+        // dd($data_bobot_pref);
         /* ---------------------------- NILAI ALTERNATIF ---------------------------- */
         // get all data matrik keputusan
         $matrix = [];
@@ -257,7 +259,8 @@ trait UjiTopsisDirectTrait
             // dd($normal, $ntkey);
             $terbobots = [];
             foreach ($normal as $ntkkey => $ntkval) {
-                $kri = Kriteria::where('kode', $ntkkey)->first();
+                // $kri = Kriteria::where('kode', $ntkkey)->first();
+                $kri = $data_bobot_pref[$ntkkey];
                 $terbobots[$ntkkey] = $ntkval * $kri->bobot;
             }
             $normalisasis_terbobot[$ntkey] = $terbobots;

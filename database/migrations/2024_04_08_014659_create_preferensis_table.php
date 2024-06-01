@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->unsigned()->comment('ID Pengguna');
             $table->integer('kriteria_id')->unsigned()->nullable()->default(NULL)->comment('ID Kriteria yang dipilih oleh pengguna');
-            $table->integer('sub_kriteria_id')->unsigned()->nullable()->default(NULL)->comment('ID Sub Kriteria yang dipilih oleh pengguna');
+            $table->string('kriteria_kode')->nullable()->default(NULL)->comment('Kode Kriteria yang dipilih oleh pengguna');
+            // $table->integer('sub_kriteria_id')->unsigned()->nullable()->default(NULL)->comment('ID Sub Kriteria yang dipilih oleh pengguna');
+            $table->float('bobot', 5, 3)->nullable()->comment('Bobot kriteria dalam persen');
             $table->timestamps();
         });
     }

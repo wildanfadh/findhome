@@ -24,6 +24,13 @@ class Preferensi extends Model
     protected $fillable = [
         'user_id',
         'kriteria_id',
-        'sub_kriteria_id'
+        'kriteria_kode',
+        // 'sub_kriteria_id',
+        'bobot'
     ];
+
+    public function pengguna()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

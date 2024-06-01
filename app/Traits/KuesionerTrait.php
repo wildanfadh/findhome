@@ -76,14 +76,78 @@ trait KuesionerTrait
         //     "K3_K4" => "4"
         //   ]
 
-        // Mencari Baris Total
+        // Inisialisasi matriks preferensi dengan nilai default 1
+        $matriks_preferensi = [];
+        $jumlah_kriteria = count($data_preferensi) / 2; // Hitung jumlah kriteria berdasarkan jumlah pasangan kriteria yang diberikan
+        for ($i = 1; $i <= $jumlah_kriteria; $i++) {
+            for ($j = 1; $j <= $jumlah_kriteria; $j++) {
+                $matriks_preferensi["K{$i}_K{$j}"] = $data_preferensi["K{$i}_K{$j}"] ?? 1;
+            }
+        }
 
-        // Menormalisasikan matriks & bobot prioritas
+        // Hitung Baris Total
+        $baris_total = [];
+        foreach ($matriks_preferensi as $key => $value) {
+            $baris = explode("_", $key)[0];
+            if (!isset($baris_total[$baris])) {
+                $baris_total[$baris] = 0;
+            }
+            $baris_total[$baris] += $value;
+        }
 
+        // Normalisasi Matriks & Bobot Prioritas
+        $matriks_normalisasi = [];
+        foreach ($matriks_preferensi as $key => $value) {
+            $baris = explode("_", $key)[0];
+            $kolom = explode("_", $key)[1];
+            $matriks_normalisasi[$key] = $value / $baris_total[$kolom];
+        }
+        // dd($matriks_normalisasi);
+
+        $bobot_prioritas = [];
+        $jumlah_kriteria = count($baris_total);
+        for ($i = 1; $i <= $jumlah_kriteria; $i++) {
+            $total_kolom = 0;
+            for ($j = 1; $j <= $jumlah_kriteria; $j++) {
+                $total_kolom += $matriks_normalisasi["K{$i}_K{$j}"];
+            }
+            $bobot_prioritas["K{$i}"] = $total_kolom / $jumlah_kriteria;
+        }
+
+        // Hitung bobot prioritas dengan membulatkan ke dua angka desimal
+        foreach ($bobot_prioritas as $key => $value) {
+            $bobot_prioritas[$key] = round($value, 2);
+        }
+
+        $data_kriteria = Kriteria::all();
+        $bobot = [];
+        foreach ($data_kriteria as $krikey => $krivalue) {
+            $bobot[$krivalue->kode] = $bobot_prioritas[$krivalue->kode] ?? 0;
+        }
+        // dd($bobot);
+
+        // dd($bobot_prioritas);
         // Mencari Konsistensi Matriks
+        $eigen = 0;
+        foreach ($bobot as $bot) {
+            $eigen += $bot;
+        }
 
-        // Berikutnya mencari CI (Consistency Index)
+        $lambda_max = $eigen / $jumlah_kriteria;
 
-        // Berikutnya mencari RI (Ratio Index)
+        $ci = ($lambda_max - $jumlah_kriteria) / ($jumlah_kriteria - 1);
+
+        // Nilai Random Index (RI) biasanya sudah tersedia dalam tabel referensi
+        $ri = 0.90; // Misalnya, untuk matriks 4x4
+
+        $cr = $ci / $ri;
+        // dd($cr < $ri);
+
+        $result = [
+            'konsisten' => $cr < $ri,
+            'bobot' => $bobot,
+        ];
+
+        return $result;
     }
 }
