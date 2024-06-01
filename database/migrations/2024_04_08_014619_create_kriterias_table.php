@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('sifat')->default(1); // 1 = cost, 2 = benefit
             $table->float('bobot', 5, 3)->nullable()->comment('Bobot kriteria dalam persen');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

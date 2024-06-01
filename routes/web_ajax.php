@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Ajax\KriteriaController;
+use App\Http\Controllers\Ajax\KuesionerController;
 use App\Http\Controllers\Ajax\PerumahanController;
 use App\Http\Controllers\Ajax\SubKriteriaController;
 use Illuminate\Support\Facades\Route;
@@ -55,4 +56,14 @@ Route::group([
     Route::put('update/{id}', [PerumahanController::class, 'update'])->name('update')->middleware('pengembang');
     Route::post('request_kriteria_perumahan', [PerumahanController::class, 'request_kriteria_perumahan'])->name('request_kriteria_perumahan');
     Route::delete('delete/{id}', [PerumahanController::class, 'destroy'])->name('delete');
+});
+
+
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'ajax.kuesioner',
+    'as' => 'ajax.kuesioner.',
+], function () {
+    Route::get('/', [KuesionerController::class, 'index'])->name('index');
+    Route::get('hitung_bobot_kuesioner', [KuesionerController::class, 'hitung_bobot_kuesioner'])->name('hitung_bobot_kuesioner');
 });

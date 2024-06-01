@@ -20,6 +20,7 @@ class KriteriaSeeder extends Seeder
                 'nama' => 'Harga',
                 'sifat' => SifatKriteria::COST,
                 'bobot' => 0.19,
+                'keterangan' => 'Harga rumah merupakan jumlah tagihan uang yang perlu dibayarkan oleh pembeli rumah kepada penjual rumah.',
                 'created_at' => now(),
             ],
             [
@@ -27,6 +28,7 @@ class KriteriaSeeder extends Seeder
                 'nama' => 'Tipe',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.20,
+                'keterangan' => 'Tipe merupakan luasan lantai bangunan dari suatu unit rumah.',
                 'created_at' => now(),
             ],
             [
@@ -34,6 +36,7 @@ class KriteriaSeeder extends Seeder
                 'nama' => 'Fasilitas Umum',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.28,
+                'keterangan' => 'Fasilitas umum perumahan merupakan sarana prasarana yang disediakan oleh pengembang untuk kepentingan umum.',
                 'created_at' => now(),
             ],
             [
@@ -41,6 +44,7 @@ class KriteriaSeeder extends Seeder
                 'nama' => 'Lokasi',
                 'sifat' => SifatKriteria::BENEFIT,
                 'bobot' => 0.33,
+                'keterangan' => 'Lokasi Strategis rumah yang dapat dilihat dari berbagai aspek seperti aksesibilitas menuju lokasi rumah, jarak terhadap fasilitas umum (trasnportasi, kesehatan, perdagangan, perkantoran, pendidikan, hiburan dan lain-lain)',
                 'created_at' => now(),
             ],
         ];

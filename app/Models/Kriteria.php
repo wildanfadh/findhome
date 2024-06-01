@@ -26,6 +26,7 @@ class Kriteria extends Model
         'nama',
         'sifat',
         'bobot',
+        'keterangan',
     ];
 
     public function subKriterias()

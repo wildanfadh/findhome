@@ -97,6 +97,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    {{-- @php
+                        $urlRekomendasi = `{{ route('page.uji.rekomendasi') }}`;
+                        $loginRole = auth()->user()->roles[0]->name;
+                        if ($loginRole == 'Umum') {
+                            $urlRekomendasi = `{{ route('page.uji.rekomendasi_preferensi') }}`;
+                        }
+
+                    @endphp --}}
                     <a class="sidebar-link" href="{{ route('page.uji.rekomendasi') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-crown"></i>
