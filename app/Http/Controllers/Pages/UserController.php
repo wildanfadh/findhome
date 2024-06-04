@@ -50,8 +50,12 @@ class UserController extends Controller
 
     public function myprofile()
     {
-        $user = User::find(auth()->user->id);
+        $hs = head_source(['SWEETALERT2']);
+        $js = script_source(['SWEETALERT2', 'BLOCKUI']);
+        $user = User::find(auth()->user()->id);
         $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
             'user' => $user,
         ];
         return view('app.settings.myprofile', $data);

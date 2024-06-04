@@ -30,7 +30,7 @@
                 <div class="card-body">
                     <table id="kriteriaTable" class="table">
                         <thead>
-                            <tr class="text-start">
+                            <tr class="text-center">
                                 <th>NO</th>
                                 <th>Nama</th>
                                 <th>Sifat</th>
@@ -75,8 +75,13 @@
                         <div class="mb-3">
                             <label for="inputTambahBobot" class="form-label">Bobot</label>
                             <input type="number" name="bobot" class="form-control" id="inputTambahBobot"
-                                placeholder="bobot kriteria dalam persentase" @required(true)>
-                            <div id="inputTambahBobotHelp" class="form-text">Berikan nilai dalam persentase.</div>
+                                placeholder="bobot kriteria" min="0" step="0.01" @required(true)>
+                            {{-- <div id="inputTambahBobotHelp" class="form-text">Berikan nilai dalam persentase.</div> --}}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputTambahKeterangan" class="form-label">Keterangan</label>
+                            <textarea name="keterangan" class="form-control" id="inputTambahKeterangan"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
@@ -123,8 +128,13 @@
                         <div class="mb-3">
                             <label for="inputEditBobot" class="form-label">Bobot</label>
                             <input type="number" name="bobot" class="form-control" id="inputEditBobot"
-                                placeholder="bobot kriteria dalam persentase" @required(true)>
-                            <div id="inputEditBobotHelp" class="form-text">Berikan nilai dalam persentase.</div>
+                                placeholder="bobot kriteria" @required(true)>
+                            {{-- <div id="inputEditBobotHelp" class="form-text">Berikan nilai dalam persentase.</div> --}}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputEditKeterangan" class="form-label">Keterangan</label>
+                            <textarea name="keterangan" class="form-control" id="inputEditKeterangan"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
@@ -326,6 +336,7 @@
                 $('#inputEditNama').val(data.nama);
                 $('#selectEditSifat').val(data.sifat);
                 $('#inputEditBobot').val(data.bobot);
+                $('#inputEditKeterangan').val(data.keterangan);
             });
 
             $(document).on('submit', '#formEditKriteria', function(e) {

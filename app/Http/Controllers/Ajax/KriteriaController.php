@@ -23,7 +23,7 @@ class KriteriaController extends Controller
             ->addColumn('action', function ($data) {
                 $urlSubKriteria = route('page.subkriteria.list_by_kriteria', $data->id);
                 // ========== Action ==========
-                $addSubBtn = "<a class='btn btn-sm btn-primary add-sub' href={$urlSubKriteria} data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</a>";
+                $addSubBtn = "<a class='btn btn-sm btn-primary add-sub' href={$urlSubKriteria} data-single_source='{$data}'><i class='ti ti-list-details'></i></a>";
                 // $addSubBtn = "<button class='btn btn-sm btn-info sub' data-single_source='{$data}'><i class='ti ti-list-details'></i> Sub</button>";
                 $editBtn = "<button class='btn btn-sm btn-warning edit' data-single_source='{$data}'><i class='ti ti-pencil'></i></button>";
                 $deleteBtn = "<button class='btn btn-sm btn-danger delete' data-single_source='{$data}'><i class='ti ti-trash'></i></button>";
@@ -43,8 +43,10 @@ class KriteriaController extends Controller
 
             $data_request = [
                 'nama' => $request->nama,
+                'kode' => get_code_kriteria(),
                 'sifat' => $request->sifat,
                 'bobot' => $request->bobot,
+                'keterangan' => $request->keterangan,
             ];
             Kriteria::create($data_request);
 
@@ -74,6 +76,7 @@ class KriteriaController extends Controller
                 'nama' => $request->nama,
                 'sifat' => $request->sifat,
                 'bobot' => $request->bobot,
+                'keterangan' => $request->keterangan,
             ];
             $data->update($data_request);
 

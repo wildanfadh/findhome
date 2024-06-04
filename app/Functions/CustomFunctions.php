@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Kriteria;
+use App\Models\Perumahan;
 use Illuminate\Support\Facades\Storage;
 
 function store_sertifikat($data, $dir, $filereq)
@@ -86,4 +88,18 @@ function generate_key_matrix($string)
     ), '-', $string);
 
     return strtolower($result);
+}
+
+function get_code_perumahan()
+{
+    $kriteria = Perumahan::latest('id')->first();
+    $kode = "A" . (int)substr($kriteria->kode, strpos($kriteria->kode, "_") + 1) + 1;
+    return $kode;
+}
+
+function get_code_kriteria()
+{
+    $kriteria = Kriteria::latest('id')->first();
+    $kode = "K" . (int)substr($kriteria->kode, strpos($kriteria->kode, "_") + 1) + 1;
+    return $kode;
 }

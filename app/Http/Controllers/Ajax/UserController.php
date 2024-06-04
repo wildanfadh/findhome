@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\RegisterUmumRequest;
 use App\Http\Requests\RegisterPengembangRequest;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -152,7 +153,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(RegisterUmumRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         DB::beginTransaction();
         try {
