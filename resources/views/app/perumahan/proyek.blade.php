@@ -278,11 +278,14 @@
                 $('#editModal').modal('show');
 
                 let data = $(this).data('single_source');
-                console.log(data, data.image.path + data.image.name);
+                console.log(data);
+                // console.log(data, data.image.path + data.image.name);
 
                 $('#editTitle').html(data.nama);
-                $('#imagePerumahanViewEdit').attr('src', `{{ asset('/') }}` + data.image.path + data
-                    .image.name);
+                if (data.image) {
+                    $('#imagePerumahanViewEdit').attr('src', `{{ asset('/') }}` + data.image.path + data
+                        .image.name);
+                }
                 $('#inputEditPerumahanId').val(data.id);
                 $('#inputEditName').val(data.nama);
                 $('#inputEditAlamat').val(data.alamat);
