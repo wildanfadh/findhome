@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Pages\KriteriaController;
+use App\Http\Controllers\Pages\PengembangController;
 use App\Http\Controllers\Pages\PerumahanController;
 use App\Http\Controllers\Pages\RekomendasiController;
 use App\Http\Controllers\Pages\SubKriteriaController;
@@ -17,6 +18,15 @@ Route::group([
     Route::get('pengembang', [UserController::class, 'pengembang'])->name('pengembang')->middleware('admin');
     Route::get('register_pengembang', [UserController::class, 'register_pengembang'])->name('register_pengembang');
     Route::get('myprofile', [UserController::class, 'myprofile'])->name('myprofile')->middleware('auth');
+});
+
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'page.pengembang',
+    'as' => 'page.pengembang.',
+], function () {
+    Route::get('index', [PengembangController::class, 'index'])->name('index')->middleware('admin');
+    Route::get('detail/{id}', [PengembangController::class, 'detail_pengembang'])->name('detail');
 });
 
 Route::group([

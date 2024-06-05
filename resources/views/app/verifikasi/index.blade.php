@@ -17,12 +17,38 @@
                 <div class="card-body">
                     @foreach ($pengembang as $item)
                         <div class="alert alert-secondary" role="alert">
-                            {{ $item->nama_perusahaan . ' (' . $item->akun->name . ')' }} <button
-                                class="btn btn-sm btn-info float-end"> <i class="ti ti-id"></i> </button>
+                            {{-- {{ $item->nama_perusahaan . ' (' . $item->akun->name . ')' }} --}}
+                            {{ $item->nama_perusahaan }}
+                            <a href="{{ route('page.pengembang.detail', $item->id) }}"
+                                class="btn btn-sm btn-info float-end"> <i class="ti ti-id"></i>
+                            </a>
                         </div>
                     @endforeach
-                    {{-- <div class="alert alert-secondary" role="alert">
-                        Pengembang 03
+                    {{-- <div class="accordion" id="accordionPengembang">
+
+                        @foreach ($pengembang as $key => $item)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $key }}" aria-expanded="false"
+                                        aria-controls="collapse{{ $key }}">
+                                        {{ $item->nama_perusahaan }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $key }}" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionPengembang">
+                                    <div class="accordion-body">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Nama Direktur</th>
+                                                <td>{{ $item->akun->name }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
                     </div> --}}
                 </div>
             </div>
@@ -40,9 +66,6 @@
                             </a>
                         </div>
                     @endforeach
-                    {{-- <div class="alert alert-secondary" role="alert">
-                        Perumahan 03
-                    </div> --}}
                 </div>
             </div>
         </div>
@@ -53,7 +76,6 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-
             {{-- --------------------------- reload on back --------------------------- --}}
             window.addEventListener("pageshow", function(event) {
                 var historyTraversal = event.persisted ||

@@ -23,19 +23,19 @@ class UserController extends Controller
         return view('app.pengguna.index', $data);
     }
 
-    public function pengembang()
-    {
-        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
-        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
+    // public function pengembang()
+    // {
+    //     $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
+    //     $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
 
-        $user = User::all();
-        $data = [
-            'user' => $user,
-            "HeadSource" => $hs,
-            "JsSource" => $js,
-        ];
-        return view('app.pengguna.pengembang', $data);
-    }
+    //     $user = User::all();
+    //     $data = [
+    //         'user' => $user,
+    //         "HeadSource" => $hs,
+    //         "JsSource" => $js,
+    //     ];
+    //     return view('app.pengguna.pengembang', $data);
+    // }
 
     public function register_pengembang()
     {

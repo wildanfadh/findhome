@@ -50,7 +50,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('page.user.pengembang') }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('page.pengembang.index') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-database"></i>
                             </span>
