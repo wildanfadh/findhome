@@ -47,12 +47,47 @@ class PerumahanController extends Controller
         return $dataTable->make(true);
     }
 
+    public function perumahanByPengembang()
+    {
+        $data = Perumahan::with('image')->where('pengembang_id', auth()->user()->dataPengembang->id)->get();
+        $dataTable = DataTables::of($data)->addIndexColumn()
+            ->addColumn('status', function ($data) {
+                $activeBtn = '';
+                // ========== Action ==========
+                if ($data->is_verified == 1) {
+                    $activeBtn = "<span class='badge badge-sm text-bg-success' data-single_source='{$data}'>Aktif</span>";
+                } else {
+                    $activeBtn = "<span class='badge badge-sm text-bg-muted' data-single_source='{$data}'>Proses Verifikasi</span>";
+                }
+
+                $actionBtn = $activeBtn;
+                // ========== End Action ==========
+
+                return $actionBtn;
+            })->addColumn('action', function ($data) {
+                $urlKriteria = route('page.perumahan.detail_kriteria', $data->id);
+                $urlDetail = route('page.perumahan.detail', $data->id);
+                // ========== Action ==========
+                // $viewKriteriaBtn = "<a class='btn btn-sm btn-info view-kriteria' href={$urlKriteria} data-single_source='{$data}'><i class='ti ti-list-numbers'></i></a>";
+                $viewBtn = "<a class='btn btn-sm btn-info view-detail' href={$urlDetail} data-single_source='{$data}'><i class='ti ti-id'></i></a>";
+                $editBtn = "<button class='btn btn-sm btn-warning edit' data-single_source='{$data}'><i class='ti ti-pencil'></i></button>";
+                $deleteBtn = "<button class='btn btn-sm btn-danger delete' data-single_source='{$data}'><i class='ti ti-trash'></i></button>";
+
+                $actionBtn = $viewBtn . $editBtn . $deleteBtn;
+                // ========== End Action ==========
+
+                return $actionBtn;
+            })->rawColumns(['status', 'action']);
+        return $dataTable->make(true);
+    }
+
     public function store(Request $request)
     {
         // dd($request);
         DB::beginTransaction();
         try {
             $data_request = [
+                'kode' => get_code_perumahan(),
                 'pengembang_id' => auth()->user()->dataPengembang->id,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -165,5 +200,40 @@ class PerumahanController extends Controller
 
     public function destroy($id)
     {
+        DB::beginTransaction();
+        try {
+            $data = Perumahan::find($id);
+
+            if (!$data) {
+                return $this->conditionalResponse((object) [
+                    'success' => false,
+                    'message' => 'Data Tidak ditemukan',
+                    'data' => null
+                ]);
+            }
+
+            // delete image if has image
+            if ($data->image) {
+                $dir = "GAMBAR_PERUMAHAN";
+                delete_perumahan_image($data->image, $dir);
+            }
+
+            // delete kriteriaPerumahan if has kriteriaPerumahan
+            $data->kriteriaPerumahan()->delete();
+
+            $data->delete();
+            DB::commit();
+            return $this->conditionalResponse((object) [
+                'success' => true,
+                'message' => 'Data Berhasil ditambahkan',
+                'data' => null
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->conditionalResponse((object) [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

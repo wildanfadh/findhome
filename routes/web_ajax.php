@@ -52,6 +52,7 @@ Route::group([
     'as' => 'ajax.proyekperumahan.',
 ], function () {
     Route::get('/', [PerumahanController::class, 'index'])->name('index');
+    Route::get('perumahan_by_pengembang', [PerumahanController::class, 'perumahanByPengembang'])->name('perumahan_by_pengembang');
     Route::post('store', [PerumahanController::class, 'store'])->name('store')->middleware('pengembang');
     Route::put('update/{id}', [PerumahanController::class, 'update'])->name('update')->middleware('pengembang');
     Route::post('request_kriteria_perumahan', [PerumahanController::class, 'request_kriteria_perumahan'])->name('request_kriteria_perumahan');

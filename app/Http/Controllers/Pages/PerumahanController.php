@@ -14,7 +14,7 @@ class PerumahanController extends Controller
     {
         $hs = head_source([]);
         $js = script_source(['BLOCKUI']);
-        $perumahan = Perumahan::all();
+        $perumahan = Perumahan::where('is_verified', 1)->get();
 
         $data = [
             "HeadSource" => $hs,

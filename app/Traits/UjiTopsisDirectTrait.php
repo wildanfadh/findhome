@@ -32,7 +32,7 @@ trait UjiTopsisDirectTrait
         /* ---------------------------- NILAI ALTERNATIF ---------------------------- */
         // get all data matrik keputusan
         $matrix = [];
-        $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->get();
+        $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->where('is_verified', 1)->get();
         $kriterias = Kriteria::with(['subKriterias'])->get();
         foreach ($perumahans as $key => $perum) {
             $kriteriasPerPerum = [];
@@ -188,6 +188,8 @@ trait UjiTopsisDirectTrait
                 'data' => Perumahan::where('kode', $key)->first(),
             ];
         }
+
+        // dd($data);
         return $data;
     }
 
@@ -204,7 +206,7 @@ trait UjiTopsisDirectTrait
         /* ---------------------------- NILAI ALTERNATIF ---------------------------- */
         // get all data matrik keputusan
         $matrix = [];
-        $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->get();
+        $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->where('is_verified', 1)->get();
         $kriterias = Kriteria::with(['subKriterias'])->get();
         foreach ($perumahans as $key => $perum) {
             $kriteriasPerPerum = [];

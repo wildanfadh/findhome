@@ -6,12 +6,19 @@
                     <i class="ti ti-menu-2"></i>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+            <li class="nav-item">
+                {{-- <a class="nav-link nav-icon-hover" href="javascript:void(0)">
                     <i class="ti ti-bell-ringing"></i>
                     <div class="notification bg-primary rounded-circle"></div>
-                </a>
-            </li> --}}
+                </a> --}}
+                {{-- if this user login is pengembang and not yet verified show this text  --}}
+                @php
+                    if (auth()->user()->hasRole('Pengembang') && auth()->user()->dataPengembang->is_verified == 0) {
+                        echo '<span class="badge text-bg-danger typewriter">Data Anda sedang ditinjau</span>';
+                    }
+                @endphp
+                {{-- <span class="badge text-bg-danger typewriter">Data Anda sedang ditinjau</span> --}}
+            </li>
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">

@@ -75,14 +75,16 @@
                 </li> --}}
                 @endhasanyrole
                 @hasanyrole('Pengembang')
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('page.perumahan.proyek') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-home-cog"></i>
-                            </span>
-                            <span class="hide-menu">Proyek</span>
-                        </a>
-                    </li>
+                    @if (auth()->user()->hasRole('Pengembang') && auth()->user()->dataPengembang->is_verified == 1)
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('page.perumahan.proyek') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-home-cog"></i>
+                                </span>
+                                <span class="hide-menu">Proyek</span>
+                            </a>
+                        </li>
+                    @endif
                 @endhasanyrole
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>

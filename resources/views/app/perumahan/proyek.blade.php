@@ -43,8 +43,8 @@
                 </div>
                 <div class="card-body">
                     <table id="perumahanTable" class="table">
-                        <thead>
-                            <tr class="text-start">
+                        <thead class="text-center">
+                            <tr class="text-center">
                                 <th>NO</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
@@ -158,7 +158,7 @@
         $(document).ready(function() {
 
             {{-- ----------------------------- Datatables ----------------------------- --}}
-            var url = `{!! route('ajax.proyekperumahan.index') !!}`;
+            var url = `{!! route('ajax.proyekperumahan.perumahan_by_pengembang') !!}`;
             var table = $('#perumahanTable').DataTable({
                 processing: true,
                 ordering: false,
@@ -178,7 +178,8 @@
                     name: 'status'
                 }, {
                     data: 'action',
-                    name: 'action'
+                    name: 'action',
+                    width: '15%'
                 }],
             });
             {{-- ----------------------------- Datatables ----------------------------- --}}
@@ -377,6 +378,94 @@
                 });
             });
             {{-- --------------------------- Update Function -------------------------- --}}
+
+            {{-- --------------------------- Delete Function -------------------------- --}}
+            $(document).on('click', '.delete', function() {
+                console.log('delete perumahan:');
+                let data = $(this).data('single_source');
+                console.log(data);
+
+                Swal.fire({
+                    toast: true,
+                    title: "Apakah anda yakin?",
+                    text: "Anda akan menghapus data ini!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        // required for ajax request
+                        var msBeforeAjaxCall = new Date().getTime();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: `{{ url('ajax.proyekperumahan/delete') }}/${data.id}`,
+                            data: {
+                                '_token': '{{ csrf_token() }}',
+                                '_method': 'DELETE',
+                                'id': data.id
+                            },
+                            dataType: 'json',
+                            timeout: 5000,
+                            beforeSend: function() {
+                                // show spinner or loader
+                                $('#perumahanTable').block();
+                            },
+                        }).done(function(data, textStatus, jqXHR) {
+                            // Process data, as received in data parameter
+
+                            // Send warning log message if response took longer than 10 seconds
+                            var msAfterAjaxCall = new Date().getTime();
+                            var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
+                            if (timeTakenInMs > 10000) {
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Warning!",
+                                    text: "AJAX response takes a long time.",
+                                    icon: "warning"
+                                });
+                            } else {
+                                // show success message
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Berhasil!",
+                                    text: data.message,
+                                    icon: "success",
+                                    timer: 1000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            // Request failed. Show error message to user.
+                            // errorThrown has error message, or 'timeout' in case of timeout.
+                            var errors = objectToArray(jqXHR.responseJSON
+                                .errors);
+
+                            return errors.forEach(element => {
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Gagal!",
+                                    text: element[1][0],
+                                    icon: "danger",
+                                    timer: 1000,
+                                    showConfirmButton: false
+                                });
+                            });
+                        }).always(function(jqXHR, textStatus, errorThrown) {
+                            // Hide spinner or loader
+                            if (textStatus == 'success') {
+                                table.draw();
+                                $('#perumahanTable').unblock();
+                            }
+                        });
+                    }
+                });
+            });
+            {{-- --------------------------- Delete Function -------------------------- --}}
         });
     </script>
 @endpush
