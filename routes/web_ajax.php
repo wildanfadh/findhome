@@ -6,6 +6,7 @@ use App\Http\Controllers\Ajax\PerumahanController;
 use App\Http\Controllers\Ajax\SubKriteriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Ajax\UserController;
+use App\Http\Controllers\Ajax\VerifikasiController;
 
 Route::post('register_umum', [UserController::class, 'register_umum'])->name('register_umum');
 Route::post('register_pengembang', [UserController::class, 'register_pengembang'])->name('register_pengembang');
@@ -59,6 +60,14 @@ Route::group([
     Route::delete('delete/{id}', [PerumahanController::class, 'destroy'])->name('delete');
 });
 
+Route::group([
+    'middleware' => ['auth', 'role:Admin'],
+    'prefix' => 'ajax.verifikasi',
+    'as' => 'ajax.verifikasi.',
+], function () {
+    Route::put('verif_pengembang/{id}', [VerifikasiController::class, 'verifPengembang'])->name('verif_pengembang');
+    Route::put('verif_perumahan/{id}', [VerifikasiController::class, 'verifPerumahan'])->name('verif_perumahan');
+});
 
 Route::group([
     'middleware' => ['auth'],

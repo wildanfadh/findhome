@@ -47,6 +47,7 @@ trait UjiTopsisDirectTrait
             }
             $matrix[$perum->kode] = $kriteriasPerPerum;
         }
+        // dd($matrix);
 
         /* ------------------------------- NORMALISASI ------------------------------ */
         // Mengkuadratkan Matrik
@@ -207,20 +208,22 @@ trait UjiTopsisDirectTrait
         // get all data matrik keputusan
         $matrix = [];
         $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->where('is_verified', 1)->get();
-        $kriterias = Kriteria::with(['subKriterias'])->get();
+        // $kriterias = Kriteria::with(['subKriterias'])->get();
         foreach ($perumahans as $key => $perum) {
             $kriteriasPerPerum = [];
-            foreach ($kriterias as $keykri => $kri) {
+            foreach ($data_bobot_pref as $keykri => $kri) {
                 $nilaiSubKriteria = 0;
                 foreach ($perum->kriteriaPerumahan as $keykriper => $kriper) {
-                    if ($kri->id == $kriper->kriteria_id) {
+                    // dd($kri, $kriper->kriteria, $kri->kriteria_kode == $kriper->kriteria->kode);
+                    if ($kri->kriteria_kode == $kriper->kriteria->kode) {
                         $nilaiSubKriteria = $kriper->subkriteria->nilai;
                     }
                 }
-                $kriteriasPerPerum[$kri->kode] = $nilaiSubKriteria;
+                $kriteriasPerPerum[$kri->kriteria_kode] = $nilaiSubKriteria;
             }
             $matrix[$perum->kode] = $kriteriasPerPerum;
         }
+        // dd($matrix);
 
         /* ------------------------------- NORMALISASI ------------------------------ */
         // Mengkuadratkan Matrik
@@ -262,7 +265,8 @@ trait UjiTopsisDirectTrait
             $terbobots = [];
             foreach ($normal as $ntkkey => $ntkval) {
                 // $kri = Kriteria::where('kode', $ntkkey)->first();
-                $kri = $data_bobot_pref[$ntkkey];
+                if (isset($data_bobot_pref[$ntkkey]))
+                    $kri = $data_bobot_pref[$ntkkey];
                 $terbobots[$ntkkey] = $ntkval * $kri->bobot;
             }
             $normalisasis_terbobot[$ntkey] = $terbobots;
@@ -363,6 +367,8 @@ trait UjiTopsisDirectTrait
                 'data' => Perumahan::where('kode', $key)->first(),
             ];
         }
+
+        // dd($data);
         return $data;
     }
 }

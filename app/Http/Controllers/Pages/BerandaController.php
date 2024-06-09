@@ -24,18 +24,18 @@ class BerandaController extends Controller
         $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
 
         $hasilUji = [];
-        if (auth()->user()->roles[0]->name == 'Umum' && isset(auth()->user()->preferencys)) {
-            $data_bobot_pref = [];
-            foreach (auth()->user()->preferencys as $key => $value) {
-                $data_bobot_pref[$value->kriteria_kode] = $value;
-            }
-            $hasilUji = $this->uji_topsis_preference($data_bobot_pref);
-        } else {
-            $hasilUji = $this->uji_topsis_general();
-        }
+        // if (auth()->user()->roles[0]->name == 'Umum' && isset(auth()->user()->preferencys)) {
+        //     $data_bobot_pref = [];
+        //     foreach (auth()->user()->preferencys as $key => $value) {
+        //         $data_bobot_pref[$value->kriteria_kode] = $value;
+        //     }
+        //     $hasilUji = $this->uji_topsis_preference($data_bobot_pref);
+        // } else {
+        $hasilUji = $this->uji_topsis_general();
+        // }
 
-        // data perumahan terkini
-        $perumahan_terkini = Perumahan::where('is_verified', 1)->latest()->get();
+        // data 3 perumahan terkini
+        $perumahan_terkini = Perumahan::where('is_verified', 1)->orderBy('id', 'DESC')->limit(3)->get();
         $data = [
             "HeadSource" => $hs,
             "JsSource" => $js,

@@ -24,7 +24,7 @@
                             <ul class="dropdown-menu">
                                 <li><button class="dropdown-item" href="#" data-bs-toggle="modal"
                                         data-bs-target="#kuesionerModal" id="btn_kuesioner">Kueisoner</button></li>
-                                <li><a class="dropdown-item" href="#">Manual</a></li>
+                                {{-- <li><a class="dropdown-item" href="#">Manual</a></li> --}}
                             </ul>
                         </div>
                     @endhasanyrole
@@ -77,7 +77,7 @@
                         <table class="table">
                             @foreach ($kriterias as $item)
                                 <tr>
-                                    <th>{{ $item->kode }}</th>
+                                    <th>{{ $item->nama . ' (' . $item->kode . ')' }}</th>
                                     <td> {{ $item->keterangan }}</td>
                                 </tr>
                             @endforeach

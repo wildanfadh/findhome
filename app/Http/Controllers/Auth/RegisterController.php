@@ -41,6 +41,23 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
+
+        $data = [
+            "HeadSource" => $hs,
+            "JsSource" => $js,
+        ];
+        return view('auth.register', $data);
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data

@@ -205,10 +205,10 @@
                 }).done(function(data, textStatus, jqXHR) {
                     // Process data, as received in data parameter
 
-                    // Send warning log message if response took longer than 2 seconds
+                    // Send warning log message if response took longer than 10 seconds
                     var msAfterAjaxCall = new Date().getTime();
                     var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
-                    if (timeTakenInMs > 2000) {
+                    if (timeTakenInMs > 10000) {
                         Swal.fire({
                             toast: true,
                             title: "Warning!",

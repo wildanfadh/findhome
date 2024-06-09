@@ -22,6 +22,8 @@
                             $alert_class = 'alert-secondary';
                             if (in_array($no, [1, 2, 3])) {
                                 $alert_class = 'alert-success';
+                            } else {
+                                continue;
                             }
                         @endphp
                         <div class="alert {{ $alert_class }}" role="alert">

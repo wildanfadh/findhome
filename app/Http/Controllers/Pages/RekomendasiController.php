@@ -22,7 +22,7 @@ class RekomendasiController extends Controller
 
         // $loginRole = auth()->user()->roles[0]->name;
         $hasilUji = [];
-        if (auth()->user()->roles[0]->name == 'Umum' && isset(auth()->user()->preferencys)) {
+        if (auth()->user()->roles[0]->name == 'Umum' && auth()->user()->preferencys->count() > 0) {
             $data_bobot_pref = [];
             foreach (auth()->user()->preferencys as $key => $value) {
                 $data_bobot_pref[$value->kriteria_kode] = $value;
@@ -46,16 +46,16 @@ class RekomendasiController extends Controller
         return view('app.uji.rekomendasi', $data);
     }
 
-    public function rekomendasi_preferensi()
-    {
-        $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
-        $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
-        // $hasilUji = $this->uji_topsis_preference();
-        $data = [
-            "HeadSource" => $hs,
-            "JsSource" => $js,
-            // "hasilUji" => $hasilUji
-        ];
-        return view('app.uji.rekomendasi_preferensi', $data);
-    }
+    // public function rekomendasi_preferensi()
+    // {
+    //     $hs = head_source(['SWEETALERT2', 'SELECT2', 'SELECT2BS4']);
+    //     $js = script_source(['SWEETALERT2', 'BLOCKUI', 'SELECT2']);
+    //     // $hasilUji = $this->uji_topsis_preference();
+    //     $data = [
+    //         "HeadSource" => $hs,
+    //         "JsSource" => $js,
+    //         // "hasilUji" => $hasilUji
+    //     ];
+    //     return view('app.uji.rekomendasi_preferensi', $data);
+    // }
 }

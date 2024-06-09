@@ -23,8 +23,10 @@
             {{-- <a href="{{ route('page.verifikasi.index') }}" class="btn btn-primary"><i class="ti ti-arrow-back-up"></i>
                 Kembali</a> --}}
             @hasanyrole('Admin')
-                <button class="btn btn-success float-end verif-perumahan"><i class="ti ti-check"></i>
-                    Verif Perumahan</button>
+                @if ($data->is_verified == 0)
+                    <button class="btn btn-success float-end verif-perumahan"><i class="ti ti-check"></i>
+                        Verif Perumahan</button>
+                @endif
             @endhasanyrole
         </div>
     </div>
@@ -205,6 +207,100 @@
             {{-- --------------------------- Verif Perumahan -------------------------- --}}
             $('.verif-perumahan').on('click', function() {
                 console.log('verif perumahan');
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: 'Data pengembang akan diverifikasi',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Verif',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        console.log('verif pengembang');
+                        let url =
+                            "{{ route('ajax.verifikasi.verif_perumahan', ':id') }}"
+                            .replace(':id', '{{ $data->id }}');
+
+                        // required for ajax request
+                        var msBeforeAjaxCall = new Date().getTime();
+
+                        // var url = ``;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                _method: 'PUT',
+                                id: '{{ $data->id }}'
+                            },
+                            dataType: 'json',
+                            timeout: 5000,
+                            beforeSend: function() {
+                                // show spinner or loader
+
+                            },
+                        }).done(function(data, textStatus, jqXHR) {
+                            // Process data, as received in data parameter
+
+                            // Send warning log message if response took longer than 2 seconds
+                            var msAfterAjaxCall = new Date().getTime();
+                            var timeTakenInMs = msAfterAjaxCall - msBeforeAjaxCall;
+                            if (timeTakenInMs > 10000) {
+                                alert('AJAX response takes a long time');
+                            } else {
+                                // show success message
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Berhasil!",
+                                    text: data.message,
+                                    icon: "success",
+                                    timer: 1000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR.responseJSON, textStatus, errorThrown);
+                            // Request failed. Show error message to user.
+                            // errorThrown has error message, or 'timeout' in case of timeout.
+
+                            if (jqXHR.responseJSON.errors == undefined) {
+                                Swal.fire({
+                                    toast: true,
+                                    title: "Gagal!",
+                                    text: jqXHR.responseJSON.message,
+                                    icon: "warning",
+                                    // timer: 1000,
+                                    // showConfirmButton: false
+                                });
+                            } else {
+                                var errors = objectToArray(jqXHR.responseJSON
+                                    .errors);
+                                console.log(errors);
+
+                                return errors.forEach(element => {
+                                    Swal.fire({
+                                        toast: true,
+                                        title: "Gagal!",
+                                        text: element[1][0],
+                                        icon: "warning",
+                                        timer: 1000,
+                                        showConfirmButton: false
+                                    });
+                                });
+                            }
+                        }).always(function(jqXHR, textStatus, errorThrown) {
+                            // Hide spinner or loader
+                            if (textStatus == "success") {
+                                // reload page
+                                window.location.reload();
+                            }
+                        });
+                    }
+                })
             })
             {{-- --------------------------- Verif Perumahan -------------------------- --}}
         });
