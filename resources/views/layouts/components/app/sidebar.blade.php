@@ -62,17 +62,17 @@
                             <span>
                                 <i class="ti ti-database"></i>
                             </span>
-                            <span class="hide-menu">Kriteria</span>
+                            <span class="hide-menu">Kriteria dan Sub Kriteria</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('page.subkriteria.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-database"></i>
-                        </span>
-                        <span class="hide-menu">Sub Kriteria</span>
-                    </a>
-                </li> --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('page.uji.perhitungan') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-math"></i>
+                            </span>
+                            <span class="hide-menu">Perhitungan</span>
+                        </a>
+                    </li>
                 @endhasanyrole
                 @hasanyrole('Pengembang')
                     @if (auth()->user()->hasRole('Pengembang') && auth()->user()->dataPengembang->is_verified == 1)

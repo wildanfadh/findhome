@@ -46,6 +46,7 @@ Route::group([
     'as' => 'page.uji.',
 ], function () {
     Route::get('rekomendasi', [RekomendasiController::class, 'rekomendasi'])->name('rekomendasi');
+    Route::get('perhitungan', [RekomendasiController::class, 'perhitungan'])->name('perhitungan');
     Route::get('preferensi', [RekomendasiController::class, 'preferensi'])->name('preferensi')->middleware('umum');
     Route::get('rekomendasi_preferensi', [RekomendasiController::class, 'rekomendasi_preferensi'])->name('rekomendasi_preferensi')->middleware('umum');
 });
