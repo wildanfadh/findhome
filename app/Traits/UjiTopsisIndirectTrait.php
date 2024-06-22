@@ -87,23 +87,14 @@ trait UjiTopsisIndirectTrait
                 $totalAltKri[$nkkey] = $totalAltKri[$nkkey] + $nkval;
             }
         }
-
         foreach ($matrix as $nkey => $matku) {
-            // dd($matku);
             $matkus = [];
             foreach ($matku as $nkkey => $nkval) {
-                // dd($totalAltKri[$nkkey]);
-                // $sqrt_total = round(sqrt($totalAltKri[$nkkey]));
                 $sqrt_total = sqrt($totalAltKri[$nkkey]);
-                // dd($sqrt_total);
-                // $matkus[$nkkey] = round(sqrt($nkval)) / $sqrt_total;
                 $matkus[$nkkey] = $nkval / $sqrt_total;
             }
-            // dd($matkus);
             $normalisasis[$nkey] = $matkus;
         }
-        // dd($totalAltKri);
-        // dd($normalisasis);
 
         return $normalisasis;
     }
@@ -124,7 +115,8 @@ trait UjiTopsisIndirectTrait
             $terbobots = [];
             foreach ($normal as $ntkkey => $ntkval) {
                 $kri = Kriteria::where('kode', $ntkkey)->first();
-                $terbobots[$ntkkey] = $ntkval * $kri->bobot;
+                $total_bobot = Kriteria::sum('bobot');
+                $terbobots[$ntkkey] = $ntkval * $kri->bobot / $total_bobot;
             }
             $normalisasis_terbobot[$ntkey] = $terbobots;
         }
@@ -135,12 +127,26 @@ trait UjiTopsisIndirectTrait
     public function matrikSolusiIdeal($normalisasis_terbobot)
     {
         $matrik_solusi_ideal = [];
+        $bobotAltKriMin = [];
+        $bobotAltKriMax = [];
         foreach ($normalisasis_terbobot as $msikey => $normal) {
-            $min = min($normal);
-            $max = max($normal);
+            foreach ($normal as $msivalkey => $msivalval) {
+                $bobotAltKriMin[$msivalkey] = [];
+                $bobotAltKriMax[$msivalkey] = [];
+            }
+        }
+        foreach ($normalisasis_terbobot as $msikey => $normal) {
+            foreach ($normal as $msivalkey => $msivalval) {
+                array_push($bobotAltKriMin[$msivalkey], $normal[$msivalkey]);
+                array_push($bobotAltKriMax[$msivalkey], $normal[$msivalkey]);
+            }
+        }
+        foreach ($normalisasis_terbobot as $msikey => $normal) {
             $positif = [];
             $negatif = [];
             foreach ($normal as $msivalkey => $msivalval) {
+                $min = min($bobotAltKriMin[$msivalkey]);
+                $max = max($bobotAltKriMax[$msivalkey]);
                 $kri = Kriteria::where('kode', $msivalkey)->first();
                 if ($kri->sifat == SifatKriteria::BENEFIT) {
                     $positif[$msivalkey] = $max;
@@ -153,6 +159,7 @@ trait UjiTopsisIndirectTrait
             $matrik_solusi_ideal['positif'] = $positif;
             $matrik_solusi_ideal['negatif'] = $negatif;
         }
+        // dd($matrik_solusi_ideal);
 
         return $matrik_solusi_ideal;
     }
