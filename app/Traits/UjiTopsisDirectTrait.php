@@ -192,9 +192,11 @@ trait UjiTopsisDirectTrait
         // dd($jarak_solusi_ideal);
 
         // Nilai Preferensi pada setiap ALternatif
+        // dd($jarak_solusi_ideal);
         $preferensi = [];
         foreach ($jarak_solusi_ideal as $tkey => $jarak) {
-            $preferensi[$tkey] = $jarak['negatif'] / ($jarak['positif'] + $jarak['negatif']);
+            if ($jarak['positif'] + $jarak['negatif'] != 0)
+                $preferensi[$tkey] = $jarak['negatif'] / ($jarak['positif'] + $jarak['negatif']);
         }
         // dd($preferensi);
 
