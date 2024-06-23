@@ -27,7 +27,7 @@ class PerumahanController extends Controller
     public function proyek_perumahan()
     {
         $hs = head_source(['DATATABLESBS5', 'SWEETALERT2']);
-        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI']);
+        $js = script_source(['DATATABLES', 'DATATABLESBS5', 'SWEETALERT2', 'BLOCKUI', 'CUSTOMCURRENCYFORMAT']);
 
         $data = [
             "HeadSource" => $hs,

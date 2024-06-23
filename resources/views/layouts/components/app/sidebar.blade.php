@@ -44,7 +44,7 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('page.user.index') }}" aria-expanded="false">
                             <span>
-                                <i class="ti ti-database"></i>
+                                <i class="ti ti-users"></i>
                             </span>
                             <span class="hide-menu">Pengguna</span>
                         </a>
@@ -52,7 +52,7 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('page.pengembang.index') }}" aria-expanded="false">
                             <span>
-                                <i class="ti ti-database"></i>
+                                <i class="ti ti-users"></i>
                             </span>
                             <span class="hide-menu">Pengembang</span>
                         </a>
@@ -65,6 +65,8 @@
                             <span class="hide-menu">Kriteria dan Sub Kriteria</span>
                         </a>
                     </li>
+                @endhasanyrole
+                @hasanyrole('Admin|Pengembang')
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('page.uji.perhitungan') }}" aria-expanded="false">
                             <span>

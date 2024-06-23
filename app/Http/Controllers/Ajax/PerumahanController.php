@@ -15,7 +15,7 @@ class PerumahanController extends Controller
     {
         // dd(auth()->user()->roles);
         // $data = Perumahan::all();
-        $data = Perumahan::with('image')->get();
+        $data = Perumahan::with('images')->get();
         $dataTable = DataTables::of($data)->addIndexColumn()
             ->addColumn('status', function ($data) {
                 $activeBtn = '';
@@ -49,7 +49,7 @@ class PerumahanController extends Controller
 
     public function perumahanByPengembang()
     {
-        $data = Perumahan::with('image')->where('pengembang_id', auth()->user()->dataPengembang->id)->get();
+        $data = Perumahan::with('images')->where('pengembang_id', auth()->user()->dataPengembang->id)->get();
         $dataTable = DataTables::of($data)->addIndexColumn()
             ->addColumn('status', function ($data) {
                 $activeBtn = '';
@@ -86,11 +86,19 @@ class PerumahanController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
+
+            // reformat harga
+            $request->merge(['harga' => str_replace('Rp ', '', $request->harga)]);
+            $request->merge(['harga' => str_replace('.', '', $request->harga)]);
+            $request->merge(['harga' => str_replace(',00', '', $request->harga)]);
+
             $data_request = [
                 'kode' => get_code_perumahan(),
                 'pengembang_id' => auth()->user()->dataPengembang->id,
                 'nama' => $request->nama,
+                'harga' => $request->harga,
                 'alamat' => $request->alamat,
+                'lat_lang' => $request->latitude . ',' . $request->longitude,
                 'keterangan' => $request->keterangan,
                 'is_verified' => false,
             ];
@@ -98,10 +106,27 @@ class PerumahanController extends Controller
             // dd($data);
 
             // add perumahan image
+            // if ($request->hasFile('gambar')) {
+            //     $file = $request->file('gambar');
+            //     $dir = "GAMBAR_PERUMAHAN";
+            //     store_perumahan_image($data, $dir, $file);
+            // }
             if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $dir = "GAMBAR_PERUMAHAN";
-                store_perumahan_image($data, $dir, $file);
+                if (count($request->file('gambar')) <= 5) {
+
+                    $dir = "GAMBAR_PERUMAHAN_" . strtoupper($data_request['nama']);
+
+                    foreach ($request->file('gambar') as $key => $image) {
+
+                        // add new file image
+                        store_perumahan_images($data, $dir, $key, $image);
+                    }
+                } else {
+                    return $this->conditionalResponse((object) [
+                        'success' => false,
+                        'message' => 'Maksimal 5 gambar',
+                    ]);
+                }
             }
             DB::commit();
             return $this->conditionalResponse((object) [
@@ -120,15 +145,24 @@ class PerumahanController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->file('gambar'));
         // dd($request, $id);
         DB::beginTransaction();
         try {
             $data = Perumahan::find($id);
             // dd($data);
+
+            // reformat harga
+            $request->merge(['harga' => str_replace('Rp ', '', $request->harga)]);
+            $request->merge(['harga' => str_replace('.', '', $request->harga)]);
+            $request->merge(['harga' => str_replace(',00', '', $request->harga)]);
+
             $data_request = [
                 'pengembang_id' => auth()->user()->dataPengembang->id,
                 'nama' => $request->nama,
+                'harga' => $request->harga,
                 'alamat' => $request->alamat,
+                'lat_lang' => $request->latitude . ',' . $request->longitude,
                 'keterangan' => $request->keterangan,
                 'is_verified' => false,
             ];
@@ -137,20 +171,26 @@ class PerumahanController extends Controller
 
             // add perumahan image
             if ($request->hasFile('gambar')) {
+                if (count($request->file('gambar')) <= 5) {
 
-                $perumahan_image = $data->image;
+                    $dir = "GAMBAR_PERUMAHAN_" . strtoupper($data_request['nama']);
 
-                $dir = "GAMBAR_PERUMAHAN";
+                    // delete record and files
+                    delete_perumahan_images($data->images(), $dir);
 
-                // delete record and files
-                if ($perumahan_image) {
-                    delete_perumahan_image($perumahan_image, $dir);
+                    foreach ($request->file('gambar') as $key => $image) {
+
+                        // add new file image
+                        store_perumahan_images($data, $dir, $key, $image);
+                    }
+                } else {
+                    return $this->conditionalResponse((object) [
+                        'success' => false,
+                        'message' => 'Maksimal 5 gambar',
+                    ]);
                 }
-
-                // add new file image
-                $file = $request->file('gambar');
-                store_perumahan_image($data, $dir, $file);
             }
+
             DB::commit();
             return $this->conditionalResponse((object) [
                 'success' => true,
@@ -213,9 +253,13 @@ class PerumahanController extends Controller
             }
 
             // delete image if has image
-            if ($data->image) {
-                $dir = "GAMBAR_PERUMAHAN";
-                delete_perumahan_image($data->image, $dir);
+            if ($data->images) {
+                // $dir = "GAMBAR_PERUMAHAN";
+                // delete_perumahan_image($data->image, $dir);
+                $dir = "GAMBAR_PERUMAHAN_" . strtoupper($data['nama']);
+
+                // delete record and files
+                delete_perumahan_images($data->images(), $dir);
             }
 
             // delete kriteriaPerumahan if has kriteriaPerumahan

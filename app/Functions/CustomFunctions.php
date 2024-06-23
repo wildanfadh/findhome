@@ -66,6 +66,37 @@ function store_perumahan_image($data, $dir, $filereq)
     return $resultFile;
 }
 
+function store_perumahan_images($data, $dir, $no, $filereq)
+{
+    // dd($data, $dir, $filereq);
+    $path = 'public/' . $dir . '/';
+    $pathDb = 'storage/' . $dir . '/';
+    $originalName = $filereq->getClientOriginalName();
+
+    $nama_perumahan = str_replace(array(
+        '/', '"', "'",
+        '.', ';', '<', '>', ' '
+    ), '-', $data->nama);
+    $name = 'Proyek-Perumahan-' . $nama_perumahan . '_' . $no . '.' . $filereq->getClientOriginalExtension();
+
+    // save image
+    $result = Storage::disk('local')->put($path . $name, file_get_contents($filereq));
+
+    if ($result) {
+        $requestFile = [
+            'perumahan_id' => $data->id,
+            'name' => $name,
+            'original_name' => $originalName,
+            'path' => $pathDb,
+            'mime' => $filereq->getMimeType(),
+            'created_at' => now()
+        ];
+        $resultFile = $data->images()->insert($requestFile);
+    }
+
+    return $resultFile;
+}
+
 function delete_perumahan_image($data, $dir)
 {
     // dd($data, $dir);
@@ -73,6 +104,18 @@ function delete_perumahan_image($data, $dir)
     $file = $path . $data->name;
     //  delete file
     Storage::delete($file);
+
+    // delete record
+    $result = $data->delete();
+
+    return $result;
+}
+function delete_perumahan_images($data, $dir)
+{
+    // dd($data, $dir);
+    $path = 'public/' . $dir . '/';
+    //  delete folder
+    Storage::deleteDirectory($path);
 
     // delete record
     $result = $data->delete();

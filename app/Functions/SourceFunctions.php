@@ -29,7 +29,7 @@ function script_source($params)
         "BLOCKUI" => 'assets/libs/blockui/jquery.blockUI.js',
         "SELECT2" => 'assets/libs/select2/select2.min.js',
         // "SELECT2BS5" => 'assets/vendors/select2/select2-bootstrap-5-theme.min.js',
-        // "CUSTOMCURRENCYFORMAT" => 'js/customs/currency_format.js',
+        "CUSTOMCURRENCYFORMAT" => 'assets/js/curency_format.js',
         // "CUSTOMDOCUMENT" => 'js/customs/document.js',
     ];
 

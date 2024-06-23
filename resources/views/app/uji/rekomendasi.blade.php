@@ -14,6 +14,10 @@
                 </div>
                 <div class="col-6">
                     @hasanyrole('Umum')
+                        @if (auth()->user()->preferencys->count() > 0)
+                            <a href="{{ route('page.uji.perhitungan_preferensi') }}" class="btn btn-info float-end mx-3">Hasil
+                                Perhitungan</a>
+                        @endif
                         {{-- <button class="btn btn-warning float-end" data-bs-toggle="modal" data-bs-target="#preferensiModal">Atur
                             Preferensi</button> --}}
                         <div class="dropdown">
@@ -44,8 +48,18 @@
                     }
                 @endphp
                 <div class="alert {{ $alert_class }}" role="alert">
-                    {{ $item['data']->nama }} <a href="{{ route('page.perumahan.detail', $item['data']->id) }}"
-                        class="btn btn-sm btn-primary float-end">Detail</a>
+                    <div class="row">
+                        <div class="col-4">
+                            {{ $no . '. (' . $item['data']->kode . ') ' . $item['data']->nama }}
+                        </div>
+                        <div class="col-4">
+                            {{ 'Nilai : ' . $item['nilai'] }}
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('page.perumahan.detail', $item['data']->id) }}"
+                                class="btn btn-sm btn-primary float-end">Detail</a>
+                        </div>
+                    </div>
                 </div>
                 @php
                     $no++;
@@ -97,11 +111,12 @@
                                 <input type="hidden" name="input_nilai_{{ $item['kode'] }}" id="input_nilai">
                                 @foreach ($item['pilihans'] as $pkey => $pil)
                                     <div class="form-check my-3">
-                                        <input class="form-check-input" type="radio" name="pertanyaan_{{ $key }}"
-                                            id="pertanyaan_{{ $key . '_' . $pkey }}" data-nilai="{{ $pkey }}"
+                                        <input class="form-check-input" type="radio"
+                                            name="pertanyaan_{{ $key }}" id="pertanyaan_{{ $key . '_' . $pkey }}"
+                                            data-nilai="{{ $pkey }}"
                                             data-inputname="input_nilai_{{ $item['kode'] }}" @required(true)>
                                         <label class="form-check-label" for="pertanyaan_{{ $key . '_' . $pkey }}">
-                                            {{ $pil }}
+                                            {!! $pil !!}
                                         </label>
                                     </div>
                                 @endforeach

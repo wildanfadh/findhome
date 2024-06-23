@@ -8,7 +8,7 @@ use App\Enums\SifatKriteria;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
-trait UjiTopsisIndirectTrait
+trait UjiTopsisIndirectPreferenceTrait
 {
 
     /**
@@ -18,7 +18,7 @@ trait UjiTopsisIndirectTrait
      *
      * @param   integer     @matrik
      */
-    public function matrikKeputusan($kriterias)
+    public function matrikKeputusanPr($kriterias)
     {
         $matrix = [];
         $perumahans = Perumahan::with(['kriteriaPerumahan' => fn ($kriper) => $kriper->with(['kriteria', 'subkriteria'])])->where('is_verified', 1)->get();
@@ -28,11 +28,12 @@ trait UjiTopsisIndirectTrait
             foreach ($kriterias as $keykri => $kri) {
                 $nilaiSubKriteria = 0;
                 foreach ($perum->kriteriaPerumahan as $keykriper => $kriper) {
-                    if ($kri->id == $kriper->kriteria_id) {
+                    // dd($kri, $kriper->kriteria, $kri->kriteria_kode == $kriper->kriteria->kode);
+                    if ($kri->kriteria_kode == $kriper->kriteria->kode) {
                         $nilaiSubKriteria = $kriper->subkriteria->nilai;
                     }
                 }
-                $kriteriasPerPerum[$kri->kode] = $nilaiSubKriteria;
+                $kriteriasPerPerum[$kri->kriteria_kode] = $nilaiSubKriteria;
             }
             $matrix[$perum->kode] = $kriteriasPerPerum;
         }
@@ -47,7 +48,7 @@ trait UjiTopsisIndirectTrait
      *
      * @param   integer     @matrik
      */
-    public function kuadratkanMatrik($matrix)
+    public function kuadratkanMatrikPr($matrix)
     {
         $matrix_kuadrat = [];
         foreach ($matrix as $mkey => $mat) {
@@ -72,9 +73,9 @@ trait UjiTopsisIndirectTrait
      * @param   integer     @kriteriaAlternatif1
      * @param   integer     @kriteriaAlternatif2
      */
-    public function normalisasi($matrix, $matrix_kuadrat)
+    public function normalisasiPr($matrix, $matrix_kuadrat)
     {
-        // dd($matrix_kuadrat);
+        // dd($matrix, $matrix_kuadrat);
         $normalisasis = [];
         $totalAltKri = [];
         foreach ($matrix_kuadrat as $nkey => $matku) {
@@ -107,16 +108,17 @@ trait UjiTopsisIndirectTrait
      * @param   integer     @kriteriaAlternatif1
      * @param   integer     @kriteriaAlternatif2
      */
-    public function normalisasiTerbobot($normalisasis)
+    public function normalisasiTerbobotPr($normalisasis, $data_bobot_pref)
     {
         $normalisasis_terbobot = [];
         foreach ($normalisasis as $ntkey => $normal) {
             // dd($normal, $ntkey);
             $terbobots = [];
             foreach ($normal as $ntkkey => $ntkval) {
-                $kri = Kriteria::where('kode', $ntkkey)->first();
-                $total_bobot = Kriteria::sum('bobot');
-                $terbobots[$ntkkey] = $ntkval * $kri->bobot / $total_bobot;
+                if (isset($data_bobot_pref[$ntkkey]))
+                    $kri = $data_bobot_pref[$ntkkey];
+                // $total_bobot = Kriteria::sum('bobot');
+                $terbobots[$ntkkey] = $ntkval * $kri->bobot / 1;
             }
             $normalisasis_terbobot[$ntkey] = $terbobots;
         }
@@ -124,7 +126,7 @@ trait UjiTopsisIndirectTrait
         return $normalisasis_terbobot;
     }
 
-    public function matrikSolusiIdeal($normalisasis_terbobot)
+    public function matrikSolusiIdealPr($normalisasis_terbobot)
     {
         $matrik_solusi_ideal = [];
         $bobotAltKriMin = [];
@@ -164,7 +166,7 @@ trait UjiTopsisIndirectTrait
         return $matrik_solusi_ideal;
     }
 
-    public function aPLus($normalisasis_terbobot, $matrik_solusi_ideal)
+    public function aPLusPr($normalisasis_terbobot, $matrik_solusi_ideal)
     {
         $aplus = [];
         foreach ($normalisasis_terbobot as $tkey => $normal) {
@@ -183,7 +185,7 @@ trait UjiTopsisIndirectTrait
         return $aplus;
     }
 
-    public function aMin($normalisasis_terbobot, $matrik_solusi_ideal)
+    public function aMinPr($normalisasis_terbobot, $matrik_solusi_ideal)
     {
         $amin = [];
         foreach ($normalisasis_terbobot as $tkey => $normal) {
@@ -201,7 +203,7 @@ trait UjiTopsisIndirectTrait
         return $amin;
     }
 
-    public function jarakMatrikSolusiIdeal($normalisasis_terbobot, $aplus, $amin)
+    public function jarakMatrikSolusiIdealPr($normalisasis_terbobot, $aplus, $amin)
     {
         $jarak_solusi_ideal = [];
         foreach ($normalisasis_terbobot as $tkey => $normal) {
@@ -223,7 +225,7 @@ trait UjiTopsisIndirectTrait
         return $jarak_solusi_ideal;
     }
 
-    public function nilaiPreferensi($jarak_solusi_ideal)
+    public function nilaiPreferensiPr($jarak_solusi_ideal)
     {
         $preferensi = [];
         foreach ($jarak_solusi_ideal as $tkey => $jarak) {
@@ -234,7 +236,7 @@ trait UjiTopsisIndirectTrait
         return $preferensi;
     }
 
-    public function Rangking()
+    public function RangkingPr()
     {
     }
 }

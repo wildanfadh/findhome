@@ -25,8 +25,10 @@ class Perumahan extends Model
         'kode',
         'pengembang_id',
         'nama',
+        'harga',
         'alamat',
         'keterangan',
+        'lat_lang',
         'is_verified',
     ];
 
@@ -35,9 +37,9 @@ class Perumahan extends Model
         return $this->belongsTo(Pengembang::class, 'pengembang_id', 'id');
     }
 
-    public function image()
+    public function images()
     {
-        return $this->hasOne(PerumahanImage::class, 'perumahan_id', 'id');
+        return $this->hasMany(PerumahanImage::class, 'perumahan_id', 'id');
     }
 
     public function kriteriaPerumahan()

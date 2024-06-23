@@ -1,21 +1,90 @@
 @extends('layouts.app')
 
+@push('styles')
+    <style>
+        .maps {
+            height: 500px;
+        }
+
+        .maps iframe {
+            /* height: 80%; */
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="card">
         {{-- <img src="{{ asset('assets/images/products/s4.jpg') }}" height="300" class="card-img-top" alt="..."> --}}
-        @if ($data->image != null)
-            <img src="{{ asset($data->image->path . $data->image->name) }}" class="object-fit-contain border rounded"
-                style="max-height: 500px" alt="...">
-        @else
-            <img src="https://placehold.co/600x400" class="object-fit-contain border rounded" style="max-height: 500px"
-                alt="...">
-        @endif
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @if ($data->images != null || count($data->images) < 1)
+                    @foreach ($data->images as $key => $image)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ asset($image->path . $image->name) }}"
+                                class="d-block w-100 object-fit-contain border rounded" style="max-height: 500px">
+                        </div>
+                    @endforeach
+                @else
+                    <div class="carousel-item">
+                        <img src="https://placehold.co/600x400" class="d-block w-100 object-fit-contain border rounded"
+                            style="max-height: 500px" alt="...">
+                    </div>
+                @endif
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">{{ $data->nama }}</h5>
-            <p class="card-text">{{ $data->alamat }}</p>
-            <p class="card-text">{{ $data->pengembang->nama_perusahaan }}</p>
-            <p class="card-text">{{ $data->keterangan }}</p>
-            {{-- <p class="card-text">Asosiasi</p> --}}
+            <div class="row">
+                <div class="col-6">
+                    <h6 class="card-text">Nama Perumahan</h6>
+                    <p class="card-text">{{ $data->nama }}</p>
+                    <h6 class="card-text">Harga Rumah Subsidi tersedia</h6>
+                    <p class="card-text">Rp {{ number_format($data->harga, 0, ',', '.') }}</p>
+                    <h6 class="card-text">Alamat</h6>
+                    <p class="card-text">{{ $data->alamat }}</p>
+                    <h6 class="card-text">Pengembang</h6>
+                    <p class="card-text">{{ $data->pengembang->nama_perusahaan }}</p>
+                    <h6 class="card-text">Deskripsi</h6>
+                    <p class="card-text">{!! $data->keterangan ?? '-' !!}</p>
+                    {{-- <p class="card-text">Asosiasi</p> --}}
+                </div>
+                <div class="col-6">
+                    <h6 class="card-text">Peta Lokasi</h6>
+                    <div class="maps">
+                        @php
+                            $latitude = 0;
+                            $longitude = 0;
+                            if ($data->lat_lang) {
+                                // get longitude & latitude from link string
+                                $cordinates = explode(',', $data->lat_lang);
+
+                                // get longitude & latitude from link string
+                                $latitude = $cordinates[0];
+                                $longitude = $cordinates[1];
+                            }
+                        @endphp
+
+                        <iframe
+                            src="https://maps.google.com/maps?q={{ $latitude . ',' . $longitude }}&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <button onclick="history.back()" class="btn btn-primary"><i class="ti ti-arrow-back-up"></i>

@@ -12,8 +12,8 @@
         @foreach ($perumahan as $item)
             <div class="col-3">
                 <div class="card" style="height: 500px;">
-                    @if ($item->image != null)
-                        <img src="{{ asset($item->image->path . $item->image->name) }}"
+                    @if ($item->images != null)
+                        <img src="{{ asset($item->images[0]->path . $item->images[0]->name) }}"
                             class="object-fit-contain border rounded" style="height: 250px" alt="...">
                     @else
                         <img src="https://placehold.co/600x400" class="object-fit-contain border rounded"

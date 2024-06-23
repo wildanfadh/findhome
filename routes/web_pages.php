@@ -47,6 +47,7 @@ Route::group([
 ], function () {
     Route::get('rekomendasi', [RekomendasiController::class, 'rekomendasi'])->name('rekomendasi');
     Route::get('perhitungan', [RekomendasiController::class, 'perhitungan'])->name('perhitungan');
+    Route::get('perhitungan_preferensi', [RekomendasiController::class, 'perhitungan_preferensi'])->name('perhitungan_preferensi');
     Route::get('preferensi', [RekomendasiController::class, 'preferensi'])->name('preferensi')->middleware('umum');
     Route::get('rekomendasi_preferensi', [RekomendasiController::class, 'rekomendasi_preferensi'])->name('rekomendasi_preferensi')->middleware('umum');
 });

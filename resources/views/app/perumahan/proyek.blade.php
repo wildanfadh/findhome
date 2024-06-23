@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -78,8 +82,26 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="inputHarga" class="form-label">Harga Rumah Subsidi tersedia<span
+                                    class="required-symbol">*</span></label>
+                            <input type="text" name="harga" class="form-control" id="inputHarga"
+                                aria-describedby="hargaHelp" pattern="^\$\d{1.3}(.\d{3})*(\,\d+)?$" value=""
+                                data-type="currency" @required(true)>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="inputAlamat" class="form-label">Alamat<span class="required-symbol">*</span></label>
                             <textarea name="alamat" class="form-control" id="inputAlamat" rows="3" @required(true)></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputLokasi" class="form-label">Titik Lokasi</label>
+                            <div class="input-group">
+                                <input type="text" name="latitude" aria-label="Latitude" class="form-control"
+                                    placeholder="Latitude">
+                                <input type="text" name="longitude" aria-label="Longitude" class="form-control"
+                                    placeholder="Longitude">
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -89,8 +111,8 @@
 
                         <div class="mb-3">
                             <label for="inputGambar" class="form-label">Gambar<span class="required-symbol">*</span></label>
-                            <input name="gambar" type="file" class="form-control" id="inputGambar" accept="image/*"
-                                @required(true)>
+                            <input name="gambar[]" type="file" class="form-control" id="inputGambar" accept="image/*"
+                                multiple @required(true)>
                         </div>
 
                         <button type="submit" class="btn btn-primary float-end">Simpan dan Ajukan</button>
@@ -111,9 +133,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <img src="https://placehold.co/600x400" alt="image_perumahan" class="object-fit-contain border rounded"
-                        id="imagePerumahanViewEdit" style="width: 100%; max-height: 300px;">
-                    <form id="formEditPerumahan" class="mt-5" enctype="multipart/form-data">
+                    {{-- <img src="https://placehold.co/600x400" alt="image_perumahan" class="object-fit-contain border rounded"
+                        id="imagePerumahanViewEdit" style="width: 100%; max-height: 300px;"> --}}
+                    <form id="formEditPerumahan" enctype="multipart/form-data">
                         @csrf
                         {{-- @method('PUT') --}}
 
@@ -127,9 +149,27 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="inputEditHarga" class="form-label">Harga Rumah Subsidi tersedia<span
+                                    class="required-symbol">*</span></label>
+                            <input type="text" name="harga" class="form-control" id="inputEditHarga"
+                                aria-describedby="hargaHelp" pattern="^\$\d{1.3}(.\d{3})*(\,\d+)?$" value=""
+                                data-type="currency" @required(true)>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="inputEditAlamat" class="form-label">Alamat<span
                                     class="required-symbol">*</span></label>
                             <textarea name="alamat" class="form-control" id="inputEditAlamat" rows="3" @required(true)></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputEditLokasi" class="form-label">Titik Lokasi</label>
+                            <div class="input-group">
+                                <input type="text" name="latitude" aria-label="Latitude" class="form-control"
+                                    placeholder="Latitude" id="inputEditLat">
+                                <input type="text" name="longitude" aria-label="Longitude" class="form-control"
+                                    placeholder="Longitude" id="inputEditLang">
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -139,7 +179,7 @@
 
                         <div class="mb-3">
                             <label for="inputEditGambar" class="form-label">Gambar</label>
-                            <input name="gambar" type="file" class="form-control" id="inputEditGambar"
+                            <input name="gambar[]" type="file" class="form-control" id="inputEditGambar" multiple
                                 accept="image/*">
                             <div id="editGambarHelp" class="form-text">Upload gambar akan menimpa gambar yang sudah ada.
                             </div>
@@ -154,6 +194,8 @@
 @endsection
 
 @push('scripts')
+    <!-- include summernote css/js -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script>
         $(document).ready(function() {
 
@@ -184,6 +226,32 @@
             });
             {{-- ----------------------------- Datatables ----------------------------- --}}
 
+            // ========== Summernote ==========
+            $('#inputKeterangan').summernote({
+                placeholder: 'Keterangan',
+                tabsize: 2,
+                height: 100,
+                toolbar: [
+                    // ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    // ['color', ['color']],
+                    ['para', ['ol']]
+                ]
+            });
+            $('#inputEditKeterangan').summernote({
+                placeholder: 'Keterangan',
+                tabsize: 2,
+                height: 100,
+                toolbar: [
+                    // ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    // ['color', ['color']],
+                    ['para', ['ol']],
+                ]
+            });
+            // ========== Summernote ==========
+
+
             {{-- --------------------------- Tambah Function -------------------------- --}}
             $('#tambahPerumahan').click(function() {
                 // console.log('tambah kriteria:');
@@ -212,7 +280,6 @@
                     url: url,
                     data: formData,
                     dataType: 'json',
-                    timeout: 5000,
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
@@ -247,27 +314,39 @@
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    var errors = objectToArray(jqXHR.responseJSON
-                        .errors);
+                    if (jqXHR.responseJSON
+                        .errors) {
+                        var errors = objectToArray(jqXHR.responseJSON
+                            .errors);
 
-                    return errors.forEach(element => {
+                        return errors.forEach(element => {
+                            Swal.fire({
+                                toast: true,
+                                title: "Gagal!",
+                                text: element[1][0],
+                                icon: "warning",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        });
+                    } else {
                         Swal.fire({
                             toast: true,
                             title: "Gagal!",
-                            text: element[1][0],
-                            icon: "danger",
-                            timer: 1000,
+                            text: jqXHR.responseJSON.message,
+                            icon: "warning",
+                            timer: 2000,
                             showConfirmButton: false
                         });
-                    });
+                    }
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
+                    $('#perumahanTable').unblock();
+                    $('#tambahModal').unblock();
                     if (textStatus == 'success') {
                         $('#formTambahPerumahan').trigger('reset');
-                        $('#tambahModal').unblock();
                         $('#tambahModal').modal('hide');
                         table.draw();
-                        $('#perumahanTable').unblock();
                     }
                 });
             });
@@ -283,14 +362,20 @@
                 // console.log(data, data.image.path + data.image.name);
 
                 $('#editTitle').html(data.nama);
-                if (data.image) {
-                    $('#imagePerumahanViewEdit').attr('src', `{{ asset('/') }}` + data.image.path + data
-                        .image.name);
-                }
+                // if (data.image) {
+                //     $('#imagePerumahanViewEdit').attr('src', `{{ asset('/') }}` + data.image.path + data
+                //         .image.name);
+                // }
                 $('#inputEditPerumahanId').val(data.id);
                 $('#inputEditName').val(data.nama);
+                $('#inputEditHarga').val(data.harga);
                 $('#inputEditAlamat').val(data.alamat);
-                $('#inputEditKeterangan').val(data.keterangan);
+                if (data.lat_lang) {
+                    var latlang = data.lat_lang.split(',');
+                    $('#inputEditLat').val(latlang[0]);
+                    $('#inputEditLang').val(latlang[1]);
+                }
+                $('#inputEditKeterangan').summernote('code', data.keterangan);
             });
 
             $(document).on('submit', '#formEditPerumahan', function(e) {
@@ -318,7 +403,6 @@
                     url: url,
                     data: formData,
                     dataType: 'json',
-                    timeout: 5000,
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
@@ -353,27 +437,39 @@
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                     // Request failed. Show error message to user.
                     // errorThrown has error message, or 'timeout' in case of timeout.
-                    var errors = objectToArray(jqXHR.responseJSON
-                        .errors);
+                    if (jqXHR.responseJSON
+                        .errors) {
+                        var errors = objectToArray(jqXHR.responseJSON
+                            .errors);
 
-                    return errors.forEach(element => {
+                        return errors.forEach(element => {
+                            Swal.fire({
+                                toast: true,
+                                title: "Gagal!",
+                                text: element[1][0],
+                                icon: "warning",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        });
+                    } else {
                         Swal.fire({
                             toast: true,
                             title: "Gagal!",
-                            text: element[1][0],
-                            icon: "danger",
-                            timer: 1000,
+                            text: jqXHR.responseJSON.message,
+                            icon: "warning",
+                            timer: 2000,
                             showConfirmButton: false
                         });
-                    });
+                    }
                 }).always(function(jqXHR, textStatus, errorThrown) {
                     // Hide spinner or loader
+                    $('#perumahanTable').unblock();
+                    $('#formEditPerumahan').unblock();
                     if (textStatus == 'success') {
                         $('#formEditPerumahan').trigger('reset');
                         $('#editModal').modal('hide');
                         table.draw();
-                        $('#perumahanTable').unblock();
-                        $('#formEditPerumahan').unblock();
                     }
                 });
             });
@@ -442,24 +538,36 @@
                         }).fail(function(jqXHR, textStatus, errorThrown) {
                             // Request failed. Show error message to user.
                             // errorThrown has error message, or 'timeout' in case of timeout.
-                            var errors = objectToArray(jqXHR.responseJSON
-                                .errors);
+                            if (jqXHR.responseJSON
+                                .errors) {
+                                var errors = objectToArray(jqXHR.responseJSON
+                                    .errors);
 
-                            return errors.forEach(element => {
+                                return errors.forEach(element => {
+                                    Swal.fire({
+                                        toast: true,
+                                        title: "Gagal!",
+                                        text: element[1][0],
+                                        icon: "warning",
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    });
+                                });
+                            } else {
                                 Swal.fire({
                                     toast: true,
                                     title: "Gagal!",
-                                    text: element[1][0],
-                                    icon: "danger",
-                                    timer: 1000,
+                                    text: jqXHR.responseJSON.message,
+                                    icon: "warning",
+                                    timer: 2000,
                                     showConfirmButton: false
                                 });
-                            });
+                            }
                         }).always(function(jqXHR, textStatus, errorThrown) {
                             // Hide spinner or loader
+                            $('#perumahanTable').unblock();
                             if (textStatus == 'success') {
                                 table.draw();
-                                $('#perumahanTable').unblock();
                             }
                         });
                     }
