@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Pages\BerandaController;
 
 /*
@@ -24,6 +25,10 @@ Auth::routes();
 
 // Route::get('/beranda', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+
+Route::get('/storagelink', function () {
+    Artisan::call('storage:link');
+});
 
 require __DIR__ . '/web_ajax.php';
 require __DIR__ . '/web_pages.php';
